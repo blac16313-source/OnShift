@@ -9,116 +9,98 @@
 <style>html,body{overflow-x:hidden}.active-filter{background:white;color:black!important}</style>
 </head>
 <body class="bg-[#0a0a0a] text-white">
-
 <header class="sticky top-0 z-50 bg-[#0a0a0a] border-b border-white/10">
 <div class="max-w-[1400px] mx-auto px-5 h-[60px] flex items-center justify-between">
 <a href="index.html" class="font-black text-[20px]">OnShift.</a>
 <a href="index.html" class="border border-white/20 px-4 py-2 text-[10px] font-bold">HOME</a>
 </div>
 </header>
-
 <section class="max-w-[1400px] mx-auto px-5 pt-10 pb-6">
 <h1 class="text-[40px] font-black leading-[0.9]">ALL<br>TEMPLATES</h1>
-
-<!-- FILTER BAR -->
-<div class="mt-8 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-<button onclick="filterT('all')" id="f-all" class="active-filter px-5 py-2 border border-white/20 text-[11px] font-bold tracking-widest whitespace-nowrap">ALL</button>
-<button onclick="filterT('shoe')" id="f-shoe" class="px-5 py-2 border border-white/20 text-[11px] font-bold tracking-widest whitespace-nowrap text-white/50">SHOE STORE</button>
-<button onclick="filterT('phone')" id="f-phone" class="px-5 py-2 border border-white/20 text-[11px] font-bold tracking-widest whitespace-nowrap text-white/50">PHONE STORE</button>
-<button onclick="filterT('electronic')" id="f-electronic" class="px-5 py-2 border border-white/20 text-[11px] font-bold tracking-widest whitespace-nowrap text-white/50">ELECTRONIC</button>
-<button onclick="filterT('clothes')" id="f-clothes" class="px-5 py-2 border border-white/20 text-[11px] font-bold tracking-widest whitespace-nowrap text-white/50">CLOTHES</button>
-<button onclick="filterT('kirana')" id="f-kirana" class="px-5 py-2 border border-white/20 text-[11px] font-bold tracking-widest whitespace-nowrap text-white/50">KIRANA</button>
+<div class="mt-8 flex gap-2 overflow-x-auto pb-2">
+<button onclick="filterT('all')" id="f-all" class="active-filter px-5 py-2 border border-white/20 text-[11px] font-bold tracking-widest">ALL</button>
+<button onclick="filterT('shoe')" id="f-shoe" class="px-5 py-2 border border-white/20 text-[11px] font-bold tracking-widest text-white/50">SHOE STORE</button>
+<button onclick="filterT('phone')" id="f-phone" class="px-5 py-2 border border-white/20 text-[11px] font-bold tracking-widest text-white/50">PHONE STORE</button>
+<button onclick="filterT('electronic')" id="f-electronic" class="px-5 py-2 border border-white/20 text-[11px] font-bold tracking-widest text-white/50">ELECTRONIC</button>
+<button onclick="filterT('clothes')" id="f-clothes" class="px-5 py-2 border border-white/20 text-[11px] font-bold tracking-widest text-white/50">CLOTHES</button>
+<button onclick="filterT('kirana')" id="f-kirana" class="px-5 py-2 border border-white/20 text-[11px] font-bold tracking-widest text-white/50">KIRANA</button>
 </div>
 </section>
-
 <section class="max-w-[1400px] mx-auto px-5 pb-20">
 <div id="grid" class="grid md:grid-cols-3 gap-[1px] bg-white/10 border border-white/10">
-<div class="bg-[#111] p-10 text-center text-white/20 text-[11px]">LOADING TEMPLATES FROM SHEET...</div>
+<div class="bg-[#111] p-10 text-center text-white/30 text-[11px]">READING YOUR SHEET...</div>
 </div>
 </section>
 
 <script>
+// THIS IS YOUR SHEET LINK - NOT WEBSITE LINK
 const SHEET_CSV = "https://docs.google.com/spreadsheets/d/1iZUkVkq8JkRWEehmfDa4ustz-7RzAqjL_moNoZrzjT0/export?format=csv";
 
-// base templates
-const templates = [
-{id:'shoe',cat:'shoe',name:'SHOE STORE',icon:'ri-store-3-line',desc:'WhatsApp + COD + Size', sheetCat: ['footwear','shoe']},
-{id:'phone',cat:'phone',name:'PHONE STORE',icon:'ri-smartphone-line',desc:'IMEI + Combo + Exchange', sheetCat: ['phone']},
-{id:'electronic',cat:'electronic',name:'ELECTRONIC STORE',icon:'ri-computer-line',desc:'Warranty + Specs + EMI', sheetCat: ['electronic']},
-{id:'clothes',cat:'clothes',name:'CLOTHES STORE',icon:'ri-t-shirt-line',desc:'Size + Color + Lookbook', sheetCat: ['clothes']},
-{id:'kirana',cat:'kirana',name:'KIRANA STORE',icon:'ri-shopping-basket-line',desc:'Weight + Daily Delivery', sheetCat: ['kirana']},
-{id:'jewel',cat:'clothes',name:'JEWELLERY STORE',icon:'ri-vip-diamond-line',desc:'Gold + Try On + Hallmark', sheetCat: ['jewellery','jewel']},
-];
+const ICONS = {
+  shoe: "ri-store-3-line",
+  footwear: "ri-store-3-line",
+  phone: "ri-smartphone-line",
+  electronic: "ri-computer-line",
+  clothes: "ri-t-shirt-line",
+  kirana: "ri-shopping-basket-line"
+};
 
-let liveLinks = {}; // cat -> link
+let allData = [];
 
-async function loadSheetLinks(){
+async function loadFromSheet(){
   try{
     const res = await fetch(SHEET_CSV);
-    const text = await res.text();
-    const rows = text.trim().split("\n");
-    // skip header row 0
+    const csv = await res.text();
+    const rows = csv.trim().split("\n");
+    allData = [];
     for(let i=1;i<rows.length;i++){
-      const cols = rows[i].split(",");
+      if(!rows[i].trim()) continue;
+      // split but keep link with commas safe
+      let cols = rows[i].split(",");
       if(cols.length < 4) continue;
-      const archId = (cols[0]||"").trim();
-      const catRaw = (cols[2]||"").toLowerCase().trim(); // footwear, etc
-      let link = (cols[3]||"").trim();
-      // join rest if link has commas
-      if(cols.length > 4){
-        link = cols.slice(3).join(",").trim();
-      }
-      if(!link ||!link.startsWith("http")) continue;
-      liveLinks[catRaw] = link;
-    }
-    console.log("Live links loaded", liveLinks);
-    render(templates);
-  }catch(e){
-    console.log("Sheet not public yet", e);
-    render(templates);
-  }
-}
+      let arch = cols[0].replace(/"/g,"").trim();
+      let name = cols[1].replace(/"/g,"").trim();
+      let cat = cols[2].replace(/"/g,"").toLowerCase().trim();
+      let link = cols.slice(3).join(",").replace(/"/g,"").trim();
+      if(!link.startsWith("http")) continue;
 
-function getLiveLink(t){
-  for(let c of t.sheetCat){
-    if(liveLinks[c]) return liveLinks[c];
-    // also check partial
-    for(let key in liveLinks){
-      if(key.includes(c) || c.includes(key)) return liveLinks[key];
+      // normalize cat for filter: footwear -> shoe
+      let filterCat = cat;
+      if(cat.includes("foot") || cat.includes("shoe")) filterCat = "shoe";
+      if(cat.includes("phone")) filterCat = "phone";
+      if(cat.includes("electronic")) filterCat = "electronic";
+      if(cat.includes("cloth")) filterCat = "clothes";
+      if(cat.includes("kirana")) filterCat = "kirana";
+
+      allData.push({ arch, name, cat: filterCat, rawCat: cat, link });
     }
+    render(allData);
+  }catch(e){
+    document.getElementById('grid').innerHTML = `<div class="bg-[#111] p-10 text-red-400">Sheet not readable. Make sure Anyone with link - Viewer is ON. Error: ${e}</div>`;
   }
-  return null;
 }
 
 function render(list){
-document.getElementById('grid').innerHTML = list.map(t=>{
-  const live = getLiveLink(t);
-  const href = live? live : `template-view.html?id=${t.id}`;
-  const badge = live? `<span class="absolute top-3 right-3 bg-white text-black text-[9px] font-black px-2 py-1">LIVE</span>` : `<span class="absolute top-3 right-3 bg-white/10 text-white/50 text-[9px] font-bold px-2 py-1">SOON</span>`;
-  return `
-<a href="${href}" target="${live?'_blank':''}" class="bg-[#111] p-5 group relative">
-${badge}
-<div class="bg-white aspect-[4/3] flex items-center justify-center text-black"><i class="${t.icon} text-4xl"></i></div>
-<div class="mt-4 flex justify-between"><div><p class="text-[10px] text-white/30">${t.cat.toUpperCase()}</p><p class="font-bold mt-1">${t.name}</p></div><i class="ri-arrow-right-up-line text-white/20 group-hover:text-white"></i></div>
-<p class="mt-2 text-[11px] text-white/30">${t.desc}</p>
-${live? `<p class="mt-3 text-[9px] text-green-400 font-bold">↗ ${live.replace('https://','').slice(0,22)}...</p>` : ''}
-</a>`}).join('');
+  document.getElementById('grid').innerHTML = list.map(t=>{
+    const icon = ICONS[t.cat] || "ri-layout-line";
+    return `<a href="${t.link}" target="_blank" class="bg-[#111] p-5 group relative block">
+      <span class="absolute top-3 right-3 bg-white text-black text-[9px] font-black px-2 py-1">${t.arch} LIVE</span>
+      <div class="bg-white aspect-[4/3] flex items-center justify-center text-black"><i class="${icon} text-4xl"></i></div>
+      <div class="mt-4 flex justify-between"><div><p class="text-[10px] text-white/30">${t.rawCat.toUpperCase()}</p><p class="font-bold mt-1">${t.name.toUpperCase()}</p></div><i class="ri-arrow-right-up-line text-white/20 group-hover:text-white"></i></div>
+      <p class="mt-2 text-[11px] text-white/30">${t.link.replace('https://','').substring(0,30)}</p>
+    </a>`;
+  }).join('');
 }
 
 function filterT(cat){
-document.querySelectorAll('[id^=f-]').forEach(b=>{b.classList.remove('active-filter'); b.classList.add('text-white/50')});
-document.getElementById('f-'+cat).classList.add('active-filter');
-document.getElementById('f-'+cat).classList.remove('text-white/50');
-if(cat==='all') render(templates); else render(templates.filter(t=>t.cat===cat));
+  document.querySelectorAll('[id^=f-]').forEach(b=>{b.classList.remove('active-filter'); b.classList.add('text-white/50')});
+  document.getElementById('f-'+cat).classList.add('active-filter');
+  document.getElementById('f-'+cat).classList.remove('text-white/50');
+  if(cat==='all') render(allData);
+  else render(allData.filter(t=>t.cat===cat));
 }
 
-// init
-const urlParams = new URLSearchParams(window.location.search);
-const f = urlParams.get('filter');
-loadSheetLinks().then(()=>{
-  if(f){ filterT(f); }
-});
+loadFromSheet();
 </script>
-
 </body>
 </html>
