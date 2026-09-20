@@ -27,80 +27,59 @@
 </div>
 </section>
 <section class="max-w-[1400px] mx-auto px-5 pb-20">
-<div id="grid" class="grid md:grid-cols-3 gap-[1px] bg-white/10 border border-white/10">
-<div class="bg-[#111] p-10 text-center text-white/30 text-[11px]">READING YOUR SHEET...</div>
-</div>
+<div id="grid" class="grid md:grid-cols-3 gap-[1px] bg-white/10 border border-white/10"></div>
 </section>
 
 <script>
-// THIS IS YOUR SHEET LINK - NOT WEBSITE LINK
 const SHEET_CSV = "https://docs.google.com/spreadsheets/d/1iZUkVkq8JkRWEehmfDa4ustz-7RzAqjL_moNoZrzjT0/export?format=csv";
 
-const ICONS = {
-  shoe: "ri-store-3-line",
-  footwear: "ri-store-3-line",
-  phone: "ri-smartphone-line",
-  electronic: "ri-computer-line",
-  clothes: "ri-t-shirt-line",
-  kirana: "ri-shopping-basket-line"
-};
-
-let allData = [];
-
-async function loadFromSheet(){
-  try{
-    const res = await fetch(SHEET_CSV);
-    const csv = await res.text();
-    const rows = csv.trim().split("\n");
-    allData = [];
-    for(let i=1;i<rows.length;i++){
-      if(!rows[i].trim()) continue;
-      // split but keep link with commas safe
-      let cols = rows[i].split(",");
-      if(cols.length < 4) continue;
-      let arch = cols[0].replace(/"/g,"").trim();
-      let name = cols[1].replace(/"/g,"").trim();
-      let cat = cols[2].replace(/"/g,"").toLowerCase().trim();
-      let link = cols.slice(3).join(",").replace(/"/g,"").trim();
-      if(!link.startsWith("http")) continue;
-
-      // normalize cat for filter: footwear -> shoe
-      let filterCat = cat;
-      if(cat.includes("foot") || cat.includes("shoe")) filterCat = "shoe";
-      if(cat.includes("phone")) filterCat = "phone";
-      if(cat.includes("electronic")) filterCat = "electronic";
-      if(cat.includes("cloth")) filterCat = "clothes";
-      if(cat.includes("kirana")) filterCat = "kirana";
-
-      allData.push({ arch, name, cat: filterCat, rawCat: cat, link });
-    }
-    render(allData);
-  }catch(e){
-    document.getElementById('grid').innerHTML = `<div class="bg-[#111] p-10 text-red-400">Sheet not readable. Make sure Anyone with link - Viewer is ON. Error: ${e}</div>`;
-  }
-}
+let templates = [
+{id:'shoe',cat:'shoe',name:'SHOE STORE',icon:'ri-store-3-line',desc:'WhatsApp + COD + Size', link:'https://starlit-raindrop-5ccede.netlify.app', live:true},
+{id:'phone',cat:'phone',name:'PHONE STORE',icon:'ri-smartphone-line',desc:'IMEI + Combo + Exchange', link:'template-view.html?id=phone', live:false},
+{id:'electronic',cat:'electronic',name:'ELECTRONIC STORE',icon:'ri-computer-line',desc:'Warranty + Specs + EMI', link:'template-view.html?id=electronic', live:false},
+{id:'clothes',cat:'clothes',name:'CLOTHES STORE',icon:'ri-t-shirt-line',desc:'Size + Color + Lookbook', link:'template-view.html?id=clothes', live:false},
+{id:'kirana',cat:'kirana',name:'KIRANA STORE',icon:'ri-shopping-basket-line',desc:'Weight + Daily Delivery', link:'template-view.html?id=kirana', live:false},
+{id:'jewel',cat:'clothes',name:'JEWELLERY STORE',icon:'ri-vip-diamond-line',desc:'Gold + Try On + Hallmark', link:'template-view.html?id=jewel', live:false},
+];
 
 function render(list){
-  document.getElementById('grid').innerHTML = list.map(t=>{
-    const icon = ICONS[t.cat] || "ri-layout-line";
-    return `<a href="${t.link}" target="_blank" class="bg-[#111] p-5 group relative block">
-      <span class="absolute top-3 right-3 bg-white text-black text-[9px] font-black px-2 py-1">${t.arch} LIVE</span>
-      <div class="bg-white aspect-[4/3] flex items-center justify-center text-black"><i class="${icon} text-4xl"></i></div>
-      <div class="mt-4 flex justify-between"><div><p class="text-[10px] text-white/30">${t.rawCat.toUpperCase()}</p><p class="font-bold mt-1">${t.name.toUpperCase()}</p></div><i class="ri-arrow-right-up-line text-white/20 group-hover:text-white"></i></div>
-      <p class="mt-2 text-[11px] text-white/30">${t.link.replace('https://','').substring(0,30)}</p>
-    </a>`;
-  }).join('');
+document.getElementById('grid').innerHTML = list.map(t=>{
+  const badge = t.live? `<span class="absolute top-3 right-3 bg-white text-black text-[9px] font-black px-2 py-1">LIVE</span>` : `<span class="absolute top-3 right-3 bg-white/10 text-white/50 text-[9px] font-bold px-2 py-1">SOON</span>`;
+  return `<a href="${t.link}" target="${t.live?'_blank':'_self'}" class="bg-[#111] p-5 group relative block">
+  ${badge}
+  <div class="bg-white aspect-[4/3] flex items-center justify-center text-black"><i class="${t.icon} text-4xl"></i></div>
+  <div class="mt-4 flex justify-between"><div><p class="text-[10px] text-white/30">${t.cat.toUpperCase()}</p><p class="font-bold mt-1">${t.name}</p></div><i class="ri-arrow-right-up-line text-white/20 group-hover:text-white"></i></div>
+  <p class="mt-2 text-[11px] text-white/30">${t.desc}</p>
+  </a>`;
+}).join('');
 }
 
 function filterT(cat){
-  document.querySelectorAll('[id^=f-]').forEach(b=>{b.classList.remove('active-filter'); b.classList.add('text-white/50')});
-  document.getElementById('f-'+cat).classList.add('active-filter');
-  document.getElementById('f-'+cat).classList.remove('text-white/50');
-  if(cat==='all') render(allData);
-  else render(allData.filter(t=>t.cat===cat));
+document.querySelectorAll('[id^=f-]').forEach(b=>{b.classList.remove('active-filter'); b.classList.add('text-white/50')});
+document.getElementById('f-'+cat).classList.add('active-filter');
+document.getElementById('f-'+cat).classList.remove('text-white/50');
+if(cat==='all') render(templates);
+else render(templates.filter(t=>t.cat===cat));
 }
 
-loadFromSheet();
+// initial render immediately - so page is never blank like your screenshot
+render(templates);
+
+// then try to overwrite shoe link from sheet - this is your future proof part
+fetch(SHEET_CSV).then(r=>r.text()).then(csv=>{
+  const rows = csv.split("\n");
+  for(let i=1;i<rows.length;i++){
+    let cols = rows[i].split(",");
+    let cat = (cols[2]||"").toLowerCase();
+    let link = cols.slice(3).join(",").replace(/"/g,"").trim();
+    if(link.startsWith("http") && (cat.includes("shoe") || cat.includes("foot"))){
+      templates[0].link = link;
+      templates[0].live = true;
+      render(templates);
+      console.log("Updated shoe link from sheet:", link);
+    }
+  }
+}).catch(()=>{ console.log("Sheet blocked, using hardcoded link"); });
 </script>
 </body>
 </html>
