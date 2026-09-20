@@ -10,90 +10,120 @@
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Space+Grotesk:wght@400;700&display=swap');
 h1,h2{font-family:'Syne',sans-serif}
 *{box-sizing:border-box} html,body{width:100%;margin:0;overflow-x:hidden}
-body{font-family:'Space Grotesk',sans-serif;background:#0a0a0a;color:white}
-.modal-bg{backdrop-filter:blur(8px);background:rgba(0,0,0,0.7)}
+body{font-family:'Space Grotesk',sans-serif;background:#17181B;color:white}
+
+/* === RICH TEXTURE SYSTEM - ONLY 3 COLORS === */
+.bg-obsidian{
+  background-color:#17181B;
+  background-image:
+    radial-gradient(at 20% 20%, rgba(75,97,112,0.18), transparent 50%),
+    radial-gradient(at 80% 80%, rgba(67,74,80,0.20), transparent 60%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+.bg-slate{
+  background-color:#434A50;
+  background-image:
+    radial-gradient(at 30% 10%, rgba(75,97,112,0.35), transparent 60%),
+    linear-gradient(180deg, rgba(23,24,27,0.15), transparent),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+}
+.bg-storm{
+  background-color:#4B6170;
+  background-image:
+    radial-gradient(at 50% 0%, rgba(255,255,255,0.15), transparent 70%),
+    linear-gradient(180deg, rgba(23,24,27,0.1), rgba(23,24,27,0.25)),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+.border-slate{border-color:rgba(67,74,80,0.6)}
+.border-storm{border-color:rgba(75,97,112,0.5)}
+.text-obsidian{color:#17181B}
+
+.modal-bg{backdrop-filter:blur(10px);background:rgba(23,24,27,0.8)}
 .slide-up{animation:slideUp 0.35s ease-out}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.btn-storm{transition:all 0.2s ease}
+.btn-storm:hover{filter:brightness(1.15);transform:translateY(-1px);box-shadow:0 8px 25px rgba(75,97,112,0.4)}
+.card-hover{transition:all 0.3s ease}
+.card-hover:hover{transform:translateY(-2px);box-shadow:0 15px 35px rgba(0,0,0,0.4)}
 </style>
 </head>
-<body>
+<body class="bg-obsidian">
 
-<header class="sticky top-0 z-50 bg-[#0a0a0a]/95 backdrop-blur border-b border-white/10">
+<header class="sticky top-0 z-50 bg-obsidian border-b border-slate backdrop-blur">
 <div class="max-w-[1400px] mx-auto px-5 md:px-10 h-[64px] flex items-center justify-between">
-<a href="index.html" class="font-black text-[20px] tracking-tighter">OnShift<span class="text-white/40">.</span></a>
-<nav class="hidden md:flex gap-8 text-[11px] tracking-widest text-white/40">
+<a href="index.html" class="font-black text-[20px] tracking-tighter text-white">OnShift<span class="text-[#4B6170]">.</span></a>
+<nav class="hidden md:flex gap-8 text-[11px] tracking-widest text-white/50">
 <a href="#how" class="hover:text-white">HOW IT WORKS</a>
 <a href="templates.html" class="hover:text-white">OUR WORKS</a>
 <a href="#contact" class="hover:text-white">CONTACT</a>
 </nav>
-<a href="templates.html" class="bg-white text-black px-5 py-2.5 text-[11px] font-bold tracking-widest">VIEW WORKS</a>
+<a href="templates.html" class="bg-storm text-white px-5 py-2.5 text-[11px] font-bold tracking-widest btn-storm">VIEW WORKS</a>
 </div>
 </header>
 
-<section class="max-w-[1400px] mx-auto px-5 md:px-10 pt-10 md:pt-16 pb-12">
-<h1 class="font-black leading-[0.85] tracking-[-0.05em] text-[12.5vw] md:text-[8vw]">OFFLINE<br>TO<br>ONLINE</h1>
+<section class="max-w-[1400px] mx-auto px-5 md:px-10 pt-10 md:pt-20 pb-12">
+<h1 class="font-black leading-[0.85] tracking-[-0.05em] text-[12.5vw] md:text-[8vw] text-white">OFFLINE<br>TO<br><span class="text-[#4B6170]">ONLINE</span></h1>
 <div class="mt-6 flex flex-col md:flex-row gap-4 justify-between">
-<p class="text-white/40 text-[13px] max-w-[360px] leading-relaxed">We shift offline businesses online in 24 hours. No coding. No hassle. Just give us products, we deploy.</p>
+<p class="text-white/60 text-[13px] max-w-[360px] leading-relaxed">We shift offline businesses online in 24 hours. No coding. No hassle. Just give us products, we deploy.</p>
 <div class="flex gap-3">
-<a href="templates.html" class="bg-white text-black px-6 py-3.5 text-[11px] font-bold tracking-widest flex items-center gap-2">EXPLORE <i class="ri-arrow-right-up-line"></i></a>
-<a href="https://wa.me/917777777777" target="_blank" class="border border-white/15 px-4 py-3.5 text-[11px] font-bold text-white/50 flex items-center gap-2"><i class="ri-whatsapp-line"></i> 7777</a>
+<a href="templates.html" class="bg-storm text-white px-6 py-3.5 text-[11px] font-bold tracking-widest flex items-center gap-2 btn-storm">EXPLORE <i class="ri-arrow-right-up-line"></i></a>
+<a href="https://wa.me/917777777777" target="_blank" class="border border-storm bg-slate text-white px-4 py-3.5 text-[11px] font-bold flex items-center gap-2"><i class="ri-whatsapp-line"></i> 7777</a>
 </div>
 </div>
 </section>
 
-<section class="border-y border-white/10 max-w-[1400px] mx-auto px-5 md:px-10 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-[12px]">
-<div><p class="font-black text-[16px]">24H</p><p class="text-[9px] tracking-widest text-white/30">DELIVERY</p></div>
-<div><p class="font-black text-[16px]">0 CODE</p><p class="text-[9px] tracking-widest text-white/30">NO CODING</p></div>
-<div><p class="font-black text-[16px]">100%</p><p class="text-[9px] tracking-widest text-white/30">WHATSAPP</p></div>
-<div><p class="font-black text-[16px]">₹4999</p><p class="text-[9px] tracking-widest text-white/30">STARTING - 3/4 PAGES</p></div>
+<section class="bg-slate border-y border-storm max-w-[1400px] mx-auto px-5 md:px-10 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-[12px]">
+<div><p class="font-black text-[16px] text-white">24H</p><p class="text-[9px] tracking-widest text-white/50">DELIVERY</p></div>
+<div><p class="font-black text-[16px] text-white">0 CODE</p><p class="text-[9px] tracking-widest text-white/50">NO CODING</p></div>
+<div><p class="font-black text-[16px] text-white">100%</p><p class="text-[9px] tracking-widest text-white/50">WHATSAPP</p></div>
+<div><p class="font-black text-[16px] text-white">₹4999</p><p class="text-[9px] tracking-widest text-white/50">STARTING - 3/4 PAGES</p></div>
 </section>
-
-<section class="bg-white text-black py-12 md:py-16">
+<section class="bg-slate py-12 md:py-16 border-y border-storm">
 <div class="max-w-[1400px] mx-auto px-5 md:px-10">
 <div class="flex flex-col md:flex-row justify-between gap-6">
-<div><h2 class="text-[30px] md:text-[52px] font-black leading-[0.9] tracking-tighter">OUR<br>WORKS</h2>
-<p class="mt-3 text-black/50 text-[13px] max-w-[320px]">Shoe stores, mobile shops, clothing, kirana - built on ARCH system. Fast, WhatsApp first.</p>
-<div class="mt-4 inline-flex bg-black text-white px-3 py-2 text-[10px] font-bold tracking-widest">PRICE STARTING AT ₹4999 FOR 3-4 PAGES SITE</div>
+<div><h2 class="text-[30px] md:text-[52px] font-black leading-[0.9] tracking-tighter text-white">OUR<br>WORKS</h2>
+<p class="mt-3 text-white/60 text-[13px] max-w-[320px]">Shoe stores, mobile shops, clothing, kirana - built on ARCH system. Fast, WhatsApp first.</p>
+<div class="mt-4 inline-flex bg-storm text-white px-3 py-2 text-[10px] font-bold tracking-widest">PRICE STARTING AT ₹4999 FOR 3-4 PAGES SITE</div>
 </div>
 </div>
-<div class="mt-10 grid md:grid-cols-3 gap-[1px] bg-black/10 border border-black/10">
-<a href="templates.html" class="bg-white p-6 group hover:bg-black hover:text-white transition"><div class="flex justify-between text-[10px] tracking-widest opacity-30"><span>001 / ARCH</span><i class="ri-store-3-line"></i></div><h3 class="mt-8 font-black text-[18px] leading-none">SHOE<br>STORE</h3><p class="mt-3 text-[11px] opacity-60">WhatsApp orders, size chart, COD.</p><p class="mt-6 text-[10px] font-bold tracking-widest border-b border-black inline-block pb-1 group-hover:border-white">VIEW LIVE →</p></a>
-<a href="templates.html" class="bg-white p-6"><div class="flex justify-between text-[10px] tracking-widest opacity-30"><span>002 / ARCH</span><i class="ri-smartphone-line"></i></div><h3 class="mt-8 font-black text-[18px] leading-none">MOBILE<br>STORE</h3><p class="mt-3 text-[11px] opacity-60">IMEI tracking, accessories combo.</p><p class="mt-6 text-[10px] font-bold tracking-widest opacity-30">LIVE SOON</p></a>
-<a href="templates.html" class="bg-white p-6"><div class="flex justify-between text-[10px] tracking-widest opacity-30"><span>003 / ARCH</span><i class="ri-t-shirt-line"></i></div><h3 class="mt-8 font-black text-[18px] leading-none">CLOTHING<br>STORE</h3><p class="mt-3 text-[11px] opacity-60">Size, color variants, lookbook.</p><p class="mt-6 text-[10px] font-bold tracking-widest opacity-30">LIVE SOON</p></a>
+<div class="mt-10 grid md:grid-cols-3 gap-[1px] bg-[#4B6170]/30 border border-storm">
+<a href="templates.html" class="bg-obsidian p-6 group card-hover border border-transparent hover:border-storm"><div class="flex justify-between text-[10px] tracking-widest text-white/40"><span>001 / ARCH</span><i class="ri-store-3-line text-[#4B6170]"></i></div><h3 class="mt-8 font-black text-[18px] leading-none text-white">SHOE<br>STORE</h3><p class="mt-3 text-[11px] text-white/50">WhatsApp orders, size chart, COD.</p><p class="mt-6 text-[10px] font-bold tracking-widest text-[#4B6170] border-b border-[#4B6170] inline-block pb-1">VIEW LIVE →</p></a>
+<a href="templates.html" class="bg-obsidian p-6 card-hover"><div class="flex justify-between text-[10px] tracking-widest text-white/40"><span>002 / ARCH</span><i class="ri-smartphone-line text-[#4B6170]"></i></div><h3 class="mt-8 font-black text-[18px] leading-none text-white">MOBILE<br>STORE</h3><p class="mt-3 text-[11px] text-white/50">IMEI tracking, accessories combo.</p><p class="mt-6 text-[10px] font-bold tracking-widest text-white/30">LIVE SOON</p></a>
+<a href="templates.html" class="bg-obsidian p-6 card-hover"><div class="flex justify-between text-[10px] tracking-widest text-white/40"><span>003 / ARCH</span><i class="ri-t-shirt-line text-[#4B6170]"></i></div><h3 class="mt-8 font-black text-[18px] leading-none text-white">CLOTHING<br>STORE</h3><p class="mt-3 text-[11px] text-white/50">Size, color variants, lookbook.</p><p class="mt-6 text-[10px] font-bold tracking-widest text-white/30">LIVE SOON</p></a>
 </div>
-<div class="mt-8 flex justify-center"><a href="templates.html" class="bg-black text-white px-8 h-[48px] flex items-center gap-3 text-[11px] font-bold tracking-widest">ALL WORKS <i class="ri-arrow-right-line"></i></a></div>
+<div class="mt-8 flex justify-center"><a href="templates.html" class="bg-storm text-white px-8 h-[48px] flex items-center gap-3 text-[11px] font-bold tracking-widest btn-storm">ALL WORKS <i class="ri-arrow-right-line"></i></a></div>
 </div>
 </section>
 
-<section id="how" class="bg-[#0a0a0a] py-14 md:py-20">
+<section id="how" class="bg-obsidian py-14 md:py-20">
 <div class="max-w-[1400px] mx-auto px-5 md:px-10">
-<div class="flex items-center gap-3"><div class="w-10 h-[1px] bg-white/20"></div><p class="text-[10px] tracking-[0.3em] text-white/30 font-bold">HOW IT WORKS</p></div>
+<div class="flex items-center gap-3"><div class="w-10 h-[1px] bg-[#4B6170]"></div><p class="text-[10px] tracking-[0.3em] text-[#4B6170] font-bold">HOW IT WORKS</p></div>
 <div class="mt-10 grid md:grid-cols-3 gap-4">
-<div class="bg-[#E8E8E8] text-black p-8"><div class="w-9 h-9 bg-black text-white flex items-center justify-center"><i class="ri-image-add-line"></i></div><p class="mt-8 text-[10px] tracking-widest text-black/30">STEP 01</p><h3 class="mt-2 font-bold text-[16px]">You send products</h3><p class="mt-3 text-[12px] text-black/60 leading-relaxed">Photos, prices, WhatsApp number. We handle rest.</p></div>
-<div class="bg-[#E8E8E8] text-black p-8"><div class="w-9 h-9 bg-black text-white flex items-center justify-center"><i class="ri-quill-pen-line"></i></div><p class="mt-8 text-[10px] tracking-widest text-black/30">STEP 02</p><h3 class="mt-2 font-bold text-[16px]">We build ARCH</h3><p class="mt-3 text-[12px] text-black/60 leading-relaxed">Black/white store, payments, WhatsApp orders in 24h.</p></div>
-<div class="bg-[#E8E8E8] text-black p-8"><div class="w-9 h-9 bg-black text-white flex items-center justify-center"><i class="ri-rocket-line"></i></div><p class="mt-8 text-[10px] tracking-widest text-black/30">STEP 03</p><h3 class="mt-2 font-bold text-[16px]">We hand you your site</h3><p class="mt-3 text-[12px] text-black/60 leading-relaxed">We hand you your site, you go live and start selling. No monthly loot.</p></div>
+<div class="bg-slate p-8 border border-storm card-hover"><div class="w-9 h-9 bg-storm text-white flex items-center justify-center"><i class="ri-image-add-line"></i></div><p class="mt-8 text-[10px] tracking-widest text-white/40">STEP 01</p><h3 class="mt-2 font-bold text-[16px] text-white">You send products</h3><p class="mt-3 text-[12px] text-white/60 leading-relaxed">Photos, prices, WhatsApp number. We handle rest.</p></div>
+<div class="bg-slate p-8 border border-storm card-hover"><div class="w-9 h-9 bg-storm text-white flex items-center justify-center"><i class="ri-quill-pen-line"></i></div><p class="mt-8 text-[10px] tracking-widest text-white/40">STEP 02</p><h3 class="mt-2 font-bold text-[16px] text-white">We build ARCH</h3><p class="mt-3 text-[12px] text-white/60 leading-relaxed">Black/white store, payments, WhatsApp orders in 24h.</p></div>
+<div class="bg-slate p-8 border border-storm card-hover"><div class="w-9 h-9 bg-storm text-white flex items-center justify-center"><i class="ri-rocket-line"></i></div><p class="mt-8 text-[10px] tracking-widest text-white/40">STEP 03</p><h3 class="mt-2 font-bold text-[16px] text-white">We hand you your site</h3><p class="mt-3 text-[12px] text-white/60 leading-relaxed">We hand you your site, you go live and start selling. No monthly loot.</p></div>
 </div>
 </div>
 </section>
 
-<footer id="contact" class="bg-[#080808] border-t border-white/10">
+<footer id="contact" class="bg-obsidian border-t border-slate">
 <div class="max-w-[1400px] mx-auto px-5 md:px-10 py-14">
 <div class="grid md:grid-cols-4 gap-10">
-<div><p class="font-black text-[20px] tracking-tighter">OnShift<span class="text-white/20">.</span></p><p class="mt-4 text-[12px] text-white/30 leading-relaxed max-w-[260px]">We help offline shops go online in 24 hours. ARCH system - fast, WhatsApp first, no monthly loot.</p></div>
-<div><p class="text-[10px] tracking-[0.2em] text-white/20 font-bold">PRODUCT</p><div class="mt-4 space-y-3 text-[13px] text-white/50"><a href="templates.html" class="block hover:text-white">All Works</a><a href="templates.html" class="block hover:text-white">Shoe Store</a></div></div>
-<div><p class="text-[10px] tracking-[0.2em] text-white/20 font-bold">COMPANY</p><div class="mt-4 space-y-3 text-[13px] text-white/50"><a href="#how" class="block hover:text-white">How it works</a><button onclick="openTerms()" class="block hover:text-white text-left">Terms of Service</button><button onclick="openPrivacy()" class="block hover:text-white text-left">Privacy Policy</button></div></div>
-<div><p class="text-[10px] tracking-[0.2em] text-white/20 font-bold">CONTACT</p><div class="mt-4 space-y-3 text-[13px] text-white/50"><a href="tel:+917777777777" class="block hover:text-white">+91 77777 77777</a><a href="mailto:hello@onshift.in" class="block hover:text-white">hello@onshift.in</a></div></div>
+<div><p class="font-black text-[20px] tracking-tighter text-white">OnShift<span class="text-[#4B6170]">.</span></p><p class="mt-4 text-[12px] text-white/40 leading-relaxed max-w-[260px]">We help offline shops go online in 24 hours. ARCH system - fast, WhatsApp first, no monthly loot.</p></div>
+<div><p class="text-[10px] tracking-[0.2em] text-white/30 font-bold">PRODUCT</p><div class="mt-4 space-y-3 text-[13px] text-white/60"><a href="templates.html" class="block hover:text-white">All Works</a><a href="templates.html" class="block hover:text-white">Shoe Store</a></div></div>
+<div><p class="text-[10px] tracking-[0.2em] text-white/30 font-bold">COMPANY</p><div class="mt-4 space-y-3 text-[13px] text-white/60"><a href="#how" class="block hover:text-white">How it works</a><button onclick="openTerms()" class="block hover:text-white text-left">Terms of Service</button><button onclick="openPrivacy()" class="block hover:text-white text-left">Privacy Policy</button></div></div>
+<div><p class="text-[10px] tracking-[0.2em] text-white/30 font-bold">CONTACT</p><div class="mt-4 space-y-3 text-[13px] text-white/60"><a href="tel:+917777777777" class="block hover:text-white">+91 77777 77777</a><a href="mailto:hello@onshift.in" class="block hover:text-white">hello@onshift.in</a></div></div>
 </div>
-<div class="mt-14 pt-8 border-t border-white/10 flex justify-between text-[10px] tracking-widest text-white/20"><p>© 2026 OnShift</p><p>Price starting at ₹4999</p></div>
+<div class="mt-14 pt-8 border-t border-slate flex justify-between text-[10px] tracking-widest text-white/30"><p>© 2026 OnShift</p><p>Price starting at ₹4999</p></div>
 </div>
 </footer>
 
-<!-- TERMS POPUP - HALF PAGE -->
+<!-- TERMS POPUP -->
 <div id="termsModal" class="fixed inset-0 z-[100] hidden">
 <div class="absolute inset-0 modal-bg" onclick="closeAll()"></div>
-<div class="absolute bottom-0 left-0 right-0 bg-[#111] border-t border-white/10 max-h-[85vh] overflow-y-auto slide-up rounded-t-[20px]">
+<div class="absolute bottom-0 left-0 right-0 bg-obsidian border-t border-slate max-h-[85vh] overflow-y-auto slide-up rounded-t-[20px]">
 <div class="max-w-[800px] mx-auto px-6 py-8">
-<div class="flex justify-between items-center"><h2 class="text-[28px] font-black">TERMS OF SERVICE</h2><button onclick="closeAll()" class="w-9 h-9 bg-white text-black flex items-center justify-center rounded-full"><i class="ri-close-line"></i></button></div>
+<div class="flex justify-between items-center"><h2 class="text-[28px] font-black text-white">TERMS OF SERVICE</h2><button onclick="closeAll()" class="w-9 h-9 bg-storm text-white flex items-center justify-center rounded-full"><i class="ri-close-line"></i></button></div>
 <p class="mt-2 text-[10px] tracking-widest text-white/30">LAST UPDATED: SEPT 2026</p>
 <div class="mt-8 space-y-6 text-[13px] leading-relaxed text-white/60">
 <p><b class="text-white">1. Service:</b> OnShift builds static e-commerce sites on ARCH system. Price starting at ₹4999 for 3-4 pages. We hand you site files + live link. You own it.</p>
@@ -108,21 +138,21 @@ body{font-family:'Space Grotesk',sans-serif;background:#0a0a0a;color:white}
 </div>
 </div>
 
-<!-- PRIVACY POPUP - HALF PAGE - DIFFERENT CONTENT -->
+<!-- PRIVACY POPUP -->
 <div id="privacyModal" class="fixed inset-0 z-[100] hidden">
 <div class="absolute inset-0 modal-bg" onclick="closeAll()"></div>
-<div class="absolute bottom-0 left-0 right-0 bg-[#E8E8E8] text-black max-h-[85vh] overflow-y-auto slide-up rounded-t-[20px]">
+<div class="absolute bottom-0 left-0 right-0 bg-slate border-t border-storm max-h-[85vh] overflow-y-auto slide-up rounded-t-[20px]">
 <div class="max-w-[800px] mx-auto px-6 py-8">
-<div class="flex justify-between items-center"><h2 class="text-[28px] font-black">PRIVACY POLICY</h2><button onclick="closeAll()" class="w-9 h-9 bg-black text-white flex items-center justify-center rounded-full"><i class="ri-close-line"></i></button></div>
-<p class="mt-2 text-[10px] tracking-widest text-black/30">LAST UPDATED: SEPT 2026</p>
-<div class="mt-8 space-y-6 text-[13px] leading-relaxed text-black/60">
-<p><b class="text-black">1. What we collect:</b> Only WhatsApp number, business name, product photos you send via WhatsApp/form. No cookies tracking.</p>
-<p><b class="text-black">2. How we use:</b> To build your site and contact you for delivery. We never sell data.</p>
-<p><b class="text-black">3. WhatsApp Orders:</b> Your store's orders go directly to your WhatsApp - we don't store customer data.</p>
-<p><b class="text-black">4. Hosting:</b> Sites hosted on Netlify/Vercel - their privacy applies for visitors.</p>
-<p><b class="text-black">5. Data Deletion:</b> You can ask us to delete your data anytime at hello@onshift.in</p>
-<p><b class="text-black">6. No Spam:</b> We don't send promotional spam. Only project updates.</p>
-<p class="pt-4 text-black/30 text-[11px]">OnShift - Vidisha, MP - hello@onshift.in</p>
+<div class="flex justify-between items-center"><h2 class="text-[28px] font-black text-white">PRIVACY POLICY</h2><button onclick="closeAll()" class="w-9 h-9 bg-obsidian text-white flex items-center justify-center rounded-full border border-storm"><i class="ri-close-line"></i></button></div>
+<p class="mt-2 text-[10px] tracking-widest text-white/40">LAST UPDATED: SEPT 2026</p>
+<div class="mt-8 space-y-6 text-[13px] leading-relaxed text-white/70">
+<p><b class="text-white">1. What we collect:</b> Only WhatsApp number, business name, product photos you send via WhatsApp/form. No cookies tracking.</p>
+<p><b class="text-white">2. How we use:</b> To build your site and contact you for delivery. We never sell data.</p>
+<p><b class="text-white">3. WhatsApp Orders:</b> Your store's orders go directly to your WhatsApp - we don't store customer data.</p>
+<p><b class="text-white">4. Hosting:</b> Sites hosted on Netlify/Vercel - their privacy applies for visitors.</p>
+<p><b class="text-white">5. Data Deletion:</b> You can ask us to delete your data anytime at hello@onshift.in</p>
+<p><b class="text-white">6. No Spam:</b> We don't send promotional spam. Only project updates.</p>
+<p class="pt-4 text-white/30 text-[11px]">OnShift - Vidisha, MP - hello@onshift.in</p>
 </div>
 </div>
 </div>
@@ -133,6 +163,5 @@ function openTerms(){document.getElementById('termsModal').classList.remove('hid
 function openPrivacy(){document.getElementById('privacyModal').classList.remove('hidden');document.body.style.overflow='hidden'}
 function closeAll(){document.getElementById('termsModal').classList.add('hidden');document.getElementById('privacyModal').classList.add('hidden');document.body.style.overflow=''}
 </script>
-
 </body>
 </html>
