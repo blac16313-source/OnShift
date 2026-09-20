@@ -6,7 +6,7 @@
 <title>All Templates - OnShift</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css">
-<style>html,body{overflow-x:hidden}.active-filter{background:white;color:black}</style>
+<style>html,body{overflow-x:hidden}.active-filter{background:white;color:black!important}</style>
 </head>
 <body class="bg-[#0a0a0a] text-white">
 
@@ -33,39 +33,91 @@
 
 <section class="max-w-[1400px] mx-auto px-5 pb-20">
 <div id="grid" class="grid md:grid-cols-3 gap-[1px] bg-white/10 border border-white/10">
-<!-- JS will render here -->
+<div class="bg-[#111] p-10 text-center text-white/20 text-[11px]">LOADING TEMPLATES FROM SHEET...</div>
 </div>
 </section>
 
 <script>
+const SHEET_CSV = "https://docs.google.com/spreadsheets/d/1iZUkVkq8JkRWEehmfDa4ustz-7RzAqjL_moNoZrzjT0/export?format=csv";
+
+// base templates
 const templates = [
-{id:'shoe',cat:'shoe',name:'SHOE STORE',icon:'ri-store-3-line',desc:'WhatsApp + COD + Size'},
-{id:'phone',cat:'phone',name:'PHONE STORE',icon:'ri-smartphone-line',desc:'IMEI + Combo + Exchange'},
-{id:'electronic',cat:'electronic',name:'ELECTRONIC STORE',icon:'ri-computer-line',desc:'Warranty + Specs + EMI'},
-{id:'clothes',cat:'clothes',name:'CLOTHES STORE',icon:'ri-t-shirt-line',desc:'Size + Color + Lookbook'},
-{id:'kirana',cat:'kirana',name:'KIRANA STORE',icon:'ri-shopping-basket-line',desc:'Weight + Daily Delivery'},
-{id:'jewel',cat:'clothes',name:'JEWELLERY STORE',icon:'ri-vip-diamond-line',desc:'Gold + Try On + Hallmark'},
+{id:'shoe',cat:'shoe',name:'SHOE STORE',icon:'ri-store-3-line',desc:'WhatsApp + COD + Size', sheetCat: ['footwear','shoe']},
+{id:'phone',cat:'phone',name:'PHONE STORE',icon:'ri-smartphone-line',desc:'IMEI + Combo + Exchange', sheetCat: ['phone']},
+{id:'electronic',cat:'electronic',name:'ELECTRONIC STORE',icon:'ri-computer-line',desc:'Warranty + Specs + EMI', sheetCat: ['electronic']},
+{id:'clothes',cat:'clothes',name:'CLOTHES STORE',icon:'ri-t-shirt-line',desc:'Size + Color + Lookbook', sheetCat: ['clothes']},
+{id:'kirana',cat:'kirana',name:'KIRANA STORE',icon:'ri-shopping-basket-line',desc:'Weight + Daily Delivery', sheetCat: ['kirana']},
+{id:'jewel',cat:'clothes',name:'JEWELLERY STORE',icon:'ri-vip-diamond-line',desc:'Gold + Try On + Hallmark', sheetCat: ['jewellery','jewel']},
 ];
 
+let liveLinks = {}; // cat -> link
+
+async function loadSheetLinks(){
+  try{
+    const res = await fetch(SHEET_CSV);
+    const text = await res.text();
+    const rows = text.trim().split("\n");
+    // skip header row 0
+    for(let i=1;i<rows.length;i++){
+      const cols = rows[i].split(",");
+      if(cols.length < 4) continue;
+      const archId = (cols[0]||"").trim();
+      const catRaw = (cols[2]||"").toLowerCase().trim(); // footwear, etc
+      let link = (cols[3]||"").trim();
+      // join rest if link has commas
+      if(cols.length > 4){
+        link = cols.slice(3).join(",").trim();
+      }
+      if(!link ||!link.startsWith("http")) continue;
+      liveLinks[catRaw] = link;
+    }
+    console.log("Live links loaded", liveLinks);
+    render(templates);
+  }catch(e){
+    console.log("Sheet not public yet", e);
+    render(templates);
+  }
+}
+
+function getLiveLink(t){
+  for(let c of t.sheetCat){
+    if(liveLinks[c]) return liveLinks[c];
+    // also check partial
+    for(let key in liveLinks){
+      if(key.includes(c) || c.includes(key)) return liveLinks[key];
+    }
+  }
+  return null;
+}
+
 function render(list){
-document.getElementById('grid').innerHTML = list.map(t=>`
-<a href="template-view.html?id=${t.id}" class="bg-[#111] p-5 group">
+document.getElementById('grid').innerHTML = list.map(t=>{
+  const live = getLiveLink(t);
+  const href = live? live : `template-view.html?id=${t.id}`;
+  const badge = live? `<span class="absolute top-3 right-3 bg-white text-black text-[9px] font-black px-2 py-1">LIVE</span>` : `<span class="absolute top-3 right-3 bg-white/10 text-white/50 text-[9px] font-bold px-2 py-1">SOON</span>`;
+  return `
+<a href="${href}" target="${live?'_blank':''}" class="bg-[#111] p-5 group relative">
+${badge}
 <div class="bg-white aspect-[4/3] flex items-center justify-center text-black"><i class="${t.icon} text-4xl"></i></div>
 <div class="mt-4 flex justify-between"><div><p class="text-[10px] text-white/30">${t.cat.toUpperCase()}</p><p class="font-bold mt-1">${t.name}</p></div><i class="ri-arrow-right-up-line text-white/20 group-hover:text-white"></i></div>
 <p class="mt-2 text-[11px] text-white/30">${t.desc}</p>
-</a>`).join('');
+${live? `<p class="mt-3 text-[9px] text-green-400 font-bold">↗ ${live.replace('https://','').slice(0,22)}...</p>` : ''}
+</a>`}).join('');
 }
 
 function filterT(cat){
 document.querySelectorAll('[id^=f-]').forEach(b=>{b.classList.remove('active-filter'); b.classList.add('text-white/50')});
-document.getElementById('f-'+cat).classList.add('active-filter'); document.getElementById('f-'+cat).classList.remove('text-white/50');
+document.getElementById('f-'+cat).classList.add('active-filter');
+document.getElementById('f-'+cat).classList.remove('text-white/50');
 if(cat==='all') render(templates); else render(templates.filter(t=>t.cat===cat));
 }
 
-// auto filter from URL?filter=shoe
+// init
 const urlParams = new URLSearchParams(window.location.search);
 const f = urlParams.get('filter');
-if(f){ filterT(f); } else { render(templates); }
+loadSheetLinks().then(()=>{
+  if(f){ filterT(f); }
+});
 </script>
 
 </body>
