@@ -3,156 +3,369 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OnShift - Offline to Online</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Space+Grotesk:wght@400;700&display=swap');
-h1,h2{font-family:'Syne',sans-serif}
-*{box-sizing:border-box} html,body{width:100%;margin:0;overflow-x:hidden}
-body{font-family:'Space Grotesk',sans-serif;background:#0B1D34;color:white}
 
-/* === RICH TEXTURE - 3 COLORS ONLY === */
-.bg-eclipse{
-  background-color:#0B1D34;
-  background-image:
-    radial-gradient(at 15% 25%, rgba(128,0,32,0.18), transparent 55%),
-    radial-gradient(at 85% 75%, rgba(14,43,36,0.30), transparent 50%),
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+<title>NOIR — Contemporary Clothing</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
-.bg-pine{
-  background-color:#0E2B24;
-  background-image:
-    radial-gradient(at 20% 30%, rgba(128,0,32,0.15), transparent 50%),
-    radial-gradient(at 80% 20%, rgba(11,29,52,0.40), transparent 60%),
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+
+body{
+  font-family:Arial, Helvetica, sans-serif;
+  background:#f6f5f1;
+  color:#111;
 }
-.bg-biking{
-  background-color:#800020;
-  background-image:
-    radial-gradient(at 30% 20%, rgba(255,255,255,0.12), transparent 40%),
-    radial-gradient(at 70% 80%, rgba(11,29,52,0.35), transparent 50%),
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+
+a{
+  color:inherit;
+  text-decoration:none;
 }
-.border-pine{border-color:rgba(14,43,36,0.6)}
-.border-biking{border-color:rgba(128,0,32,0.5)}
-.modal-bg{backdrop-filter:blur(10px);background:rgba(11,29,52,0.75)}
-.slide-up{animation:slideUp 0.35s ease-out}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+
+header{
+  height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 6%;
+  border-bottom:1px solid #ddd;
+  background:#f6f5f1;
+}
+
+.logo{
+  font-size:24px;
+  font-weight:700;
+  letter-spacing:4px;
+}
+
+nav{
+  display:flex;
+  gap:30px;
+  font-size:14px;
+}
+
+nav a:hover{
+  opacity:.55;
+}
+
+.cart{
+  font-size:14px;
+}
+
+.hero{
+  min-height:620px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  padding:40px 6%;
+  gap:30px;
+}
+
+.hero-text{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:40px 0;
+}
+
+.eyebrow{
+  font-size:12px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  margin-bottom:25px;
+}
+
+.hero h1{
+  font-size:clamp(48px,7vw,92px);
+  line-height:.92;
+  letter-spacing:-4px;
+  max-width:650px;
+}
+
+.hero p{
+  margin-top:30px;
+  max-width:450px;
+  color:#666;
+  line-height:1.7;
+  font-size:15px;
+}
+
+.button{
+  display:inline-block;
+  width:max-content;
+  margin-top:35px;
+  padding:15px 28px;
+  background:#111;
+  color:#fff;
+  font-size:13px;
+  letter-spacing:1px;
+  transition:.25s;
+}
+
+.button:hover{
+  transform:translateY(-2px);
+  background:#333;
+}
+
+.hero-image{
+  min-height:540px;
+  background:
+    linear-gradient(135deg,#d7d3ca,#8d8a82);
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-start;
+  padding:30px;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero-image span{
+  background:#fff;
+  padding:12px 16px;
+  font-size:12px;
+  letter-spacing:1px;
+}
+
+.section{
+  padding:100px 6%;
+}
+
+.section-top{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  margin-bottom:40px;
+}
+
+.section h2{
+  font-size:42px;
+  letter-spacing:-2px;
+}
+
+.section-top a{
+  font-size:13px;
+  border-bottom:1px solid #111;
+  padding-bottom:4px;
+}
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+
+.product-image{
+  aspect-ratio:3/4;
+  background:#ddd;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#777;
+  font-size:12px;
+  margin-bottom:15px;
+}
+
+.product-name{
+  font-size:14px;
+  margin-bottom:7px;
+}
+
+.product-price{
+  font-size:13px;
+  color:#666;
+}
+
+.story{
+  background:#111;
+  color:#fff;
+  padding:110px 6%;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:70px;
+}
+
+.story h2{
+  font-size:clamp(40px,6vw,75px);
+  line-height:.95;
+  letter-spacing:-3px;
+}
+
+.story p{
+  color:#aaa;
+  line-height:1.8;
+  max-width:500px;
+}
+
+footer{
+  background:#111;
+  color:#777;
+  border-top:1px solid #333;
+  padding:30px 6%;
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+}
+
+@media(max-width:800px){
+
+  header{
+    padding:0 5%;
+  }
+
+  nav{
+    display:none;
+  }
+
+  .hero{
+    grid-template-columns:1fr;
+    padding:20px 5%;
+  }
+
+  .hero-image{
+    min-height:420px;
+  }
+
+  .products{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .section{
+    padding:75px 5%;
+  }
+
+  .section h2{
+    font-size:34px;
+  }
+
+  .story{
+    grid-template-columns:1fr;
+    padding:80px 5%;
+  }
+
+  footer{
+    padding:25px 5%;
+  }
+}
 </style>
 </head>
-<body class="bg-eclipse">
 
-<header class="sticky top-0 z-50 bg-eclipse border-b border-pine backdrop-blur">
-<div class="max-w-[1400px] mx-auto px-5 md:px-10 h-[64px] flex items-center justify-between">
-<a href="index.html" class="font-black text-[20px] tracking-tighter">OnShift<span class="text-[#800020]">.</span></a>
-<nav class="hidden md:flex gap-8 text-[11px] tracking-widest text-white/50">
-<a href="#how" class="hover:text-white">HOW IT WORKS</a>
-<a href="templates.html" class="hover:text-white">OUR WORKS</a>
-<a href="#contact" class="hover:text-white">CONTACT</a>
-</nav>
-<a href="templates.html" class="bg-biking text-white px-5 py-2.5 text-[11px] font-bold tracking-widest">VIEW WORKS</a>
-</div>
+<body>
+
+<header>
+
+  <a href="index.html" class="logo">NOIR</a>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="#story">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <a href="shop.html" class="cart">Cart (0)</a>
+
 </header>
 
-<section class="max-w-[1400px] mx-auto px-5 md:px-10 pt-10 md:pt-16 pb-12 bg-eclipse">
-<h1 class="font-black leading-[0.85] tracking-[-0.05em] text-[12.5vw] md:text-[8vw]">OFFLINE<br>TO<br>ONLINE</h1>
-<div class="mt-6 flex flex-col md:flex-row gap-4 justify-between">
-<p class="text-white/50 text-[13px] max-w-[360px] leading-relaxed">We shift offline businesses online in 24 hours. No coding. No hassle. Just give us products, we deploy.</p>
-<div class="flex gap-3">
-<a href="templates.html" class="bg-biking text-white px-6 py-3.5 text-[11px] font-bold tracking-widest flex items-center gap-2">EXPLORE <i class="ri-arrow-right-up-line"></i></a>
-<a href="https://wa.me/917777777777" target="_blank" class="border border-pine bg-pine px-4 py-3.5 text-[11px] font-bold text-white/70 flex items-center gap-2"><i class="ri-whatsapp-line"></i> 7777</a>
-</div>
-</div>
-</section>
-<section class="bg-pine text-white py-12 md:py-16 border-y border-biking">
-<div class="max-w-[1400px] mx-auto px-5 md:px-10">
-<div class="flex flex-col md:flex-row justify-between gap-6">
-<div><h2 class="text-[30px] md:text-[52px] font-black leading-[0.9] tracking-tighter">OUR<br>WORKS</h2>
-<p class="mt-3 text-white/50 text-[13px] max-w-[320px]">Shoe stores, mobile shops, clothing, kirana - built on ARCH system. Fast, WhatsApp first.</p>
-<div class="mt-4 inline-flex bg-biking text-white px-3 py-2 text-[10px] font-bold tracking-widest">PRICE STARTING AT ₹4999 FOR 3-4 PAGES SITE</div>
-</div>
-</div>
-<div class="mt-10 grid md:grid-cols-3 gap-[1px] bg-[#800020]/30 border border-[#800020]/30">
-<a href="templates.html" class="bg-eclipse p-6 group hover:bg-biking transition duration-300"><div class="flex justify-between text-[10px] tracking-widest text-white/40"><span>001 / ARCH</span><i class="ri-store-3-line"></i></div><h3 class="mt-8 font-black text-[18px] leading-none text-white">SHOE<br>STORE</h3><p class="mt-3 text-[11px] text-white/50">WhatsApp orders, size chart, COD.</p><p class="mt-6 text-[10px] font-bold tracking-widest border-b border-white/20 inline-block pb-1 text-white">VIEW LIVE →</p></a>
-<a href="templates.html" class="bg-eclipse p-6"><div class="flex justify-between text-[10px] tracking-widest text-white/40"><span>002 / ARCH</span><i class="ri-smartphone-line"></i></div><h3 class="mt-8 font-black text-[18px] leading-none text-white">MOBILE<br>STORE</h3><p class="mt-3 text-[11px] text-white/50">IMEI tracking, accessories combo.</p><p class="mt-6 text-[10px] font-bold tracking-widest text-white/30">LIVE SOON</p></a>
-<a href="templates.html" class="bg-eclipse p-6"><div class="flex justify-between text-[10px] tracking-widest text-white/40"><span>003 / ARCH</span><i class="ri-t-shirt-line"></i></div><h3 class="mt-8 font-black text-[18px] leading-none text-white">CLOTHING<br>STORE</h3><p class="mt-3 text-[11px] text-white/50">Size, color variants, lookbook.</p><p class="mt-6 text-[10px] font-bold tracking-widest text-white/30">LIVE SOON</p></a>
-</div>
-<div class="mt-8 flex justify-center"><a href="templates.html" class="bg-biking text-white px-8 h-[48px] flex items-center gap-3 text-[11px] font-bold tracking-widest">ALL WORKS <i class="ri-arrow-right-line"></i></a></div>
-</div>
+
+<main>
+
+<section class="hero">
+
+  <div class="hero-text">
+
+    <div class="eyebrow">New Collection · 2026</div>
+
+    <h1>Wear less.<br>Mean more.</h1>
+
+    <p>
+      Contemporary clothing designed around clean silhouettes,
+      considered details and everyday confidence.
+    </p>
+
+    <a href="shop.html" class="button">
+      SHOP COLLECTION
+    </a>
+
+  </div>
+
+
+  <div class="hero-image">
+
+    <span>SPRING / SUMMER</span>
+
+  </div>
+
 </section>
 
-<section id="how" class="bg-eclipse py-14 md:py-20">
-<div class="max-w-[1400px] mx-auto px-5 md:px-10">
-<div class="flex items-center gap-3"><div class="w-10 h-[1px] bg-[#800020]"></div><p class="text-[10px] tracking-[0.3em] text-white/40 font-bold">HOW IT WORKS</p></div>
-<div class="mt-10 grid md:grid-cols-3 gap-4">
-<div class="bg-pine p-8 border border-[#800020]/20"><div class="w-9 h-9 bg-biking text-white flex items-center justify-center"><i class="ri-image-add-line"></i></div><p class="mt-8 text-[10px] tracking-widest text-white/30">STEP 01</p><h3 class="mt-2 font-bold text-[16px] text-white">You send products</h3><p class="mt-3 text-[12px] text-white/50 leading-relaxed">Photos, prices, WhatsApp number. We handle rest.</p></div>
-<div class="bg-pine p-8 border border-[#800020]/20"><div class="w-9 h-9 bg-biking text-white flex items-center justify-center"><i class="ri-quill-pen-line"></i></div><p class="mt-8 text-[10px] tracking-widest text-white/30">STEP 02</p><h3 class="mt-2 font-bold text-[16px] text-white">We build ARCH</h3><p class="mt-3 text-[12px] text-white/50 leading-relaxed">Eclipse + Pine store, payments, WhatsApp orders in 24h.</p></div>
-<div class="bg-pine p-8 border border-[#800020]/20"><div class="w-9 h-9 bg-biking text-white flex items-center justify-center"><i class="ri-rocket-line"></i></div><p class="mt-8 text-[10px] tracking-widest text-white/30">STEP 03</p><h3 class="mt-2 font-bold text-[16px] text-white">We hand you your site</h3><p class="mt-3 text-[12px] text-white/50 leading-relaxed">We hand you your site, you go live and start selling. No monthly loot.</p></div>
-</div>
-</div>
+
+<section class="section">
+
+  <div class="section-top">
+
+    <h2>Featured</h2>
+
+    <a href="shop.html">View all products →</a>
+
+  </div>
+
+
+  <div class="products">
+
+    <div>
+      <div class="product-image">PRODUCT IMAGE</div>
+      <div class="product-name">Essential Overshirt</div>
+      <div class="product-price">₹1,999</div>
+    </div>
+
+    <div>
+      <div class="product-image">PRODUCT IMAGE</div>
+      <div class="product-name">Relaxed Black Tee</div>
+      <div class="product-price">₹999</div>
+    </div>
+
+    <div>
+      <div class="product-image">PRODUCT IMAGE</div>
+      <div class="product-name">Wide Leg Trousers</div>
+      <div class="product-price">₹2,299</div>
+    </div>
+
+    <div>
+      <div class="product-image">PRODUCT IMAGE</div>
+      <div class="product-name">Minimal Jacket</div>
+      <div class="product-price">₹3,499</div>
+    </div>
+
+  </div>
+
 </section>
 
-<footer id="contact" class="bg-pine border-t border-biking">
-<div class="max-w-[1400px] mx-auto px-5 md:px-10 py-14">
-<div class="grid md:grid-cols-4 gap-10">
-<div><p class="font-black text-[20px] tracking-tighter text-white">OnShift<span class="text-[#800020]">.</span></p><p class="mt-4 text-[12px] text-white/40 leading-relaxed max-w-[260px]">We help offline shops go online in 24 hours. ARCH system - fast, WhatsApp first, no monthly loot.</p></div>
-<div><p class="text-[10px] tracking-[0.2em] text-white/30 font-bold">PRODUCT</p><div class="mt-4 space-y-3 text-[13px] text-white/50"><a href="templates.html" class="block hover:text-white">All Works</a><a href="templates.html" class="block hover:text-white">Shoe Store</a></div></div>
-<div><p class="text-[10px] tracking-[0.2em] text-white/30 font-bold">COMPANY</p><div class="mt-4 space-y-3 text-[13px] text-white/50"><a href="#how" class="block hover:text-white">How it works</a><button onclick="openTerms()" class="block hover:text-white text-left">Terms of Service</button><button onclick="openPrivacy()" class="block hover:text-white text-left">Privacy Policy</button></div></div>
-<div><p class="text-[10px] tracking-[0.2em] text-white/30 font-bold">CONTACT</p><div class="mt-4 space-y-3 text-[13px] text-white/50"><a href="tel:+917777777777" class="block hover:text-white">+91 77777 77777</a><a href="mailto:hello@onshift.in" class="block hover:text-white">hello@onshift.in</a></div></div>
-</div>
-<div class="mt-14 pt-8 border-t border-[#800020]/20 flex justify-between text-[10px] tracking-widest text-white/30"><p>© 2026 OnShift</p><p>Price starting at ₹4999</p></div>
-</div>
+
+<section class="story" id="story">
+
+  <h2>
+    Made for<br>
+    everyday life.
+  </h2>
+
+  <p>
+    NOIR is built around simple pieces that feel considered,
+    comfortable and timeless. Every collection focuses on
+    quality, versatility and modern everyday style.
+  </p>
+
+</section>
+
+</main>
+
+
+<footer id="contact">
+
+  <span>© 2026 NOIR</span>
+
+  <span>Instagram · WhatsApp · Contact</span>
+
 </footer>
 
-<div id="termsModal" class="fixed inset-0 z-[100] hidden">
-<div class="absolute inset-0 modal-bg" onclick="closeAll()"></div>
-<div class="absolute bottom-0 left-0 right-0 bg-pine border-t border-biking max-h-[85vh] overflow-y-auto slide-up rounded-t-[20px]">
-<div class="max-w-[800px] mx-auto px-6 py-8">
-<div class="flex justify-between items-center"><h2 class="text-[28px] font-black text-white">TERMS OF SERVICE</h2><button onclick="closeAll()" class="w-9 h-9 bg-biking text-white flex items-center justify-center rounded-full"><i class="ri-close-line"></i></button></div>
-<p class="mt-2 text-[10px] tracking-widest text-white/30">LAST UPDATED: SEPT 2026</p>
-<div class="mt-8 space-y-6 text-[13px] leading-relaxed text-white/60">
-<p><b class="text-white">1. Service:</b> OnShift builds static e-commerce sites on ARCH system. Price starting at ₹4999 for 3-4 pages. We hand you site files + live link. You own it.</p>
-<p><b class="text-white">2. Handover:</b> After payment we deliver zip + Netlify/Vercel deploy. Domain setup help included. No monthly fee from us.</p>
-<p><b class="text-white">3. Your Content:</b> You provide photos/prices. You are responsible for legal rights.</p>
-<p><b class="text-white">4. No Refund After Delivery:</b> Digital product delivered instantly - no refund once live link shared.</p>
-<p><b class="text-white">5. Support:</b> 7 days bug fix support for build issues, not new features.</p>
-<p><b class="text-white">6. Ownership:</b> After full payment, code is yours. We can showcase it in Our Works.</p>
-<p class="pt-4 text-white/30 text-[11px]">Contact: hello@onshift.in - Vidisha, MP</p>
-</div>
-</div>
-</div>
-</div>
-
-<div id="privacyModal" class="fixed inset-0 z-[100] hidden">
-<div class="absolute inset-0 modal-bg" onclick="closeAll()"></div>
-<div class="absolute bottom-0 left-0 right-0 bg-eclipse text-white border-t border-biking max-h-[85vh] overflow-y-auto slide-up rounded-t-[20px]">
-<div class="max-w-[800px] mx-auto px-6 py-8">
-<div class="flex justify-between items-center"><h2 class="text-[28px] font-black">PRIVACY POLICY</h2><button onclick="closeAll()" class="w-9 h-9 bg-biking text-white flex items-center justify-center rounded-full"><i class="ri-close-line"></i></button></div>
-<p class="mt-2 text-[10px] tracking-widest text-white/30">LAST UPDATED: SEPT 2026</p>
-<div class="mt-8 space-y-6 text-[13px] leading-relaxed text-white/60">
-<p><b class="text-white">1. What we collect:</b> Only WhatsApp number, business name, product photos you send via WhatsApp/form. No cookies tracking.</p>
-<p><b class="text-white">2. How we use:</b> To build your site and contact you for delivery. We never sell data.</p>
-<p><b class="text-white">3. WhatsApp Orders:</b> Your store's orders go directly to your WhatsApp - we don't store customer data.</p>
-<p><b class="text-white">4. Hosting:</b> Sites hosted on Netlify/Vercel - their privacy applies for visitors.</p>
-<p><b class="text-white">5. Data Deletion:</b> You can ask us to delete your data anytime at hello@onshift.in</p>
-<p><b class="text-white">6. No Spam:</b> We don't send promotional spam. Only project updates.</p>
-<p class="pt-4 text-white/30 text-[11px]">OnShift - Vidisha, MP - hello@onshift.in</p>
-</div>
-</div>
-</div>
-</div>
-
-<script>
-function openTerms(){document.getElementById('termsModal').classList.remove('hidden');document.body.style.overflow='hidden'}
-function openPrivacy(){document.getElementById('privacyModal').classList.remove('hidden');document.body.style.overflow='hidden'}
-function closeAll(){document.getElementById('termsModal').classList.add('hidden');document.getElementById('privacyModal').classList.add('hidden');document.body.style.overflow=''}
-</script>
 </body>
 </html>
-<section class="border-y border-pine bg-pine max-w-[1400px] mx-auto px-5 md:px-10 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-[12px]">
-<div><p class="font-black text-[16px] text-white">24H</p><p class="text-[9px] tracking-widest text-white/40">DELIVERY</p></div>
-<div><p class="font-black text-[16px] text-white">0 CODE</p><p class="text-[9px] tracking-widest text-white/40">NO CODING</p></div>
-<div><p class="font-black text-[16px] text-white">100%</p><p class="text-[9px] tracking-widest text-white/40">WHATSAPP</p></div>
-<div><p class="font-black text-[16px] text-white">₹4999</p><p class="text-[9px] tracking-widest text-white/40">STARTING - 3/4 PAGES</p></div>
-</section>
