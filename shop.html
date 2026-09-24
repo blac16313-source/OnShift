@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Shop — NOIR</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f6f5f1;
+  color:#111;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+header{
+  height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 6%;
+  border-bottom:1px solid #ddd;
+}
+
+.logo{
+  font-size:24px;
+  font-weight:700;
+  letter-spacing:4px;
+}
+
+nav{
+  display:flex;
+  gap:30px;
+  font-size:14px;
+}
+
+.cart{
+  font-size:14px;
+}
+
+.page{
+  padding:80px 6%;
+}
+
+.top{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  margin-bottom:45px;
+}
+
+.top h1{
+  font-size:clamp(45px,6vw,75px);
+  letter-spacing:-4px;
+}
+
+.top p{
+  color:#777;
+  font-size:14px;
+}
+
+.filters{
+  display:flex;
+  gap:10px;
+  margin-bottom:35px;
+  flex-wrap:wrap;
+}
+
+.filter{
+  border:1px solid #ccc;
+  background:transparent;
+  padding:10px 18px;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.filter.active,
+.filter:hover{
+  background:#111;
+  color:#fff;
+  border-color:#111;
+}
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:25px 18px;
+}
+
+.product{
+  cursor:pointer;
+}
+
+.image{
+  aspect-ratio:3/4;
+  background:#ddd;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#777;
+  font-size:11px;
+  margin-bottom:14px;
+}
+
+.name{
+  font-size:14px;
+  margin-bottom:7px;
+}
+
+.category{
+  font-size:11px;
+  color:#888;
+  margin-bottom:7px;
+}
+
+.price{
+  font-size:13px;
+}
+
+.pagination{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  margin-top:70px;
+}
+
+.page-btn{
+  width:40px;
+  height:40px;
+  border:1px solid #ccc;
+  background:transparent;
+  cursor:pointer;
+}
+
+.page-btn.active,
+.page-btn:hover{
+  background:#111;
+  color:#fff;
+  border-color:#111;
+}
+
+footer{
+  margin-top:80px;
+  background:#111;
+  color:#777;
+  padding:30px 6%;
+  font-size:12px;
+  display:flex;
+  justify-content:space-between;
+}
+
+@media(max-width:900px){
+
+  .products{
+    grid-template-columns:repeat(3,1fr);
+  }
+}
+
+@media(max-width:650px){
+
+  header{
+    padding:0 5%;
+  }
+
+  nav{
+    display:none;
+  }
+
+  .page{
+    padding:55px 5%;
+  }
+
+  .top{
+    display:block;
+  }
+
+  .top p{
+    margin-top:15px;
+  }
+
+  .products{
+    grid-template-columns:repeat(2,1fr);
+    gap:25px 12px;
+  }
+
+  footer{
+    padding:25px 5%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+  <a href="index.html" class="logo">NOIR</a>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="index.html#story">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <a href="#" class="cart">Cart (0)</a>
+
+</header>
+
+
+<main class="page">
+
+  <div class="top">
+
+    <div>
+      <h1>Shop</h1>
+    </div>
+
+    <p>Explore the latest NOIR collection.</p>
+
+  </div>
+
+
+  <div class="filters">
+
+    <button class="filter active">All</button>
+    <button class="filter">Shirts</button>
+    <button class="filter">T-Shirts</button>
+    <button class="filter">Trousers</button>
+    <button class="filter">Jackets</button>
+
+  </div>
+
+
+  <div class="products">
+
+
+    <div class="product">
+
+      <div class="image">PRODUCT IMAGE</div>
+
+      <div class="category">Shirts</div>
+
+      <div class="name">Essential Overshirt</div>
+
+      <div class="price">₹1,999</div>
+
+    </div>
+
+
+    <div class="product">
+
+      <div class="image">PRODUCT IMAGE</div>
+
+      <div class="category">T-Shirts</div>
+
+      <div class="name">Relaxed Black Tee</div>
+
+      <div class="price">₹999</div>
+
+    </div>
+
+
+    <div class="product">
+
+      <div class="image">PRODUCT IMAGE</div>
+
+      <div class="category">Trousers</div>
+
+      <div class="name">Wide Leg Trousers</div>
+
+      <div class="price">₹2,299</div>
+
+    </div>
+
+
+    <div class="product">
+
+      <div class="image">PRODUCT IMAGE</div>
+
+      <div class="category">Jackets</div>
+
+      <div class="name">Minimal Jacket</div>
+
+      <div class="price">₹3,499</div>
+
+    </div>
+
+
+    <div class="product">
+
+      <div class="image">PRODUCT IMAGE</div>
+
+      <div class="category">Shirts</div>
+
+      <div class="name">Linen Shirt</div>
+
+      <div class="price">₹1,799</div>
+
+    </div>
+
+
+    <div class="product">
+
+      <div class="image">PRODUCT IMAGE</div>
+
+      <div class="category">T-Shirts</div>
+
+      <div class="name">Heavyweight Tee</div>
+
+      <div class="price">₹1,199</div>
+
+    </div>
+
+
+    <div class="product">
+
+      <div class="image">PRODUCT IMAGE</div>
+
+      <div class="category">Trousers</div>
+
+      <div class="name">Relaxed Trousers</div>
+
+      <div class="price">₹2,499</div>
+
+    </div>
+
+
+    <div class="product">
+
+      <div class="image">PRODUCT IMAGE</div>
+
+      <div class="category">Jackets</div>
+
+      <div class="name">Oversized Jacket</div>
+
+      <div class="price">₹3,799</div>
+
+    </div>
+
+
+  </div>
+
+
+  <div class="pagination">
+
+    <button class="page-btn active">1</button>
+    <button class="page-btn">2</button>
+    <button class="page-btn">3</button>
+
+  </div>
+
+</main>
+
+
+<footer id="contact">
+
+  <span>© 2026 NOIR</span>
+
+  <span>Instagram · WhatsApp · Contact</span>
+
+</footer>
+
+
+<script>
+
+const filters = document.querySelectorAll(".filter");
+
+filters.forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    filters.forEach(item => {
+      item.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+  });
+
+});
+
+</script>
+
+</body>
+</html>
