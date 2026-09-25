@@ -6,6 +6,8 @@
 
 <title>NOIR — Contemporary Clothing</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 *{
   box-sizing:border-box;
@@ -155,6 +157,12 @@ nav a:hover{
   gap:18px;
 }
 
+.product-card{
+  display:block;
+  color:inherit;
+  text-decoration:none;
+}
+
 .product-image{
   aspect-ratio:3/4;
   background:#ddd;
@@ -164,6 +172,14 @@ nav a:hover{
   color:#777;
   font-size:12px;
   margin-bottom:15px;
+  overflow:hidden;
+}
+
+.product-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
 }
 
 .product-name{
@@ -174,6 +190,22 @@ nav a:hover{
 .product-price{
   font-size:13px;
   color:#666;
+}
+
+.loading{
+  grid-column:1/-1;
+  padding:50px 0;
+  text-align:center;
+  color:#777;
+  font-size:13px;
+}
+
+.empty{
+  grid-column:1/-1;
+  padding:50px 0;
+  text-align:center;
+  color:#777;
+  font-size:13px;
 }
 
 .story{
@@ -310,30 +342,10 @@ footer{
   </div>
 
 
-  <div class="products">
+  <div class="products" id="products">
 
-    <div>
-      <div class="product-image">PRODUCT IMAGE</div>
-      <div class="product-name">Essential Overshirt</div>
-      <div class="product-price">₹1,999</div>
-    </div>
-
-    <div>
-      <div class="product-image">PRODUCT IMAGE</div>
-      <div class="product-name">Relaxed Black Tee</div>
-      <div class="product-price">₹999</div>
-    </div>
-
-    <div>
-      <div class="product-image">PRODUCT IMAGE</div>
-      <div class="product-name">Wide Leg Trousers</div>
-      <div class="product-price">₹2,299</div>
-    </div>
-
-    <div>
-      <div class="product-image">PRODUCT IMAGE</div>
-      <div class="product-name">Minimal Jacket</div>
-      <div class="product-price">₹3,499</div>
+    <div class="loading">
+      Loading products...
     </div>
 
   </div>
@@ -366,6 +378,162 @@ footer{
   <span>Instagram · WhatsApp · Contact</span>
 
 </footer>
+
+
+<script>
+
+/* ==============================
+   SUPABASE
+============================== */
+
+const SUPABASE_URL =
+  "https://ktiovexnefqrgybkgpwi.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_2iKjHaxlnmTPKE1VrZCdQw_gjj6K5x3";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+/* ==============================
+   LOAD PRODUCTS
+============================== */
+
+async function loadProducts(){
+
+  const productsContainer =
+    document.getElementById("products");
+
+  try{
+
+    const result =
+      await supabaseClient
+      .from("store")
+      .select("*")
+      .eq("store_id","noir")
+      .order("created_at",{ascending:false});
+
+
+    if(result.error){
+      throw result.error;
+    }
+
+
+    const products =
+      result.data || [];
+
+
+    productsContainer.innerHTML = "";
+
+
+    if(products.length === 0){
+
+      productsContainer.innerHTML =
+        '<div class="empty">No products available yet.</div>';
+
+      return;
+    }
+
+
+    products
+    .slice(0,4)
+    .forEach(function(product){
+
+      const card =
+        document.createElement("a");
+
+      card.className =
+        "product-card";
+
+      card.href =
+        "shop.html";
+
+
+      const image =
+        document.createElement("div");
+
+      image.className =
+        "product-image";
+
+
+      if(product.image_url){
+
+        const img =
+          document.createElement("img");
+
+        img.src =
+          product.image_url;
+
+        img.alt =
+          product.name || "NOIR Product";
+
+        image.appendChild(img);
+
+      }else{
+
+        image.textContent =
+          "PRODUCT IMAGE";
+
+      }
+
+
+      const name =
+        document.createElement("div");
+
+      name.className =
+        "product-name";
+
+      name.textContent =
+        product.name || "Unnamed Product";
+
+
+      const price =
+        document.createElement("div");
+
+      price.className =
+        "product-price";
+
+      price.textContent =
+        "₹" +
+        Number(product.price || 0)
+        .toLocaleString("en-IN");
+
+
+      card.appendChild(image);
+      card.appendChild(name);
+      card.appendChild(price);
+
+      productsContainer.appendChild(card);
+
+    });
+
+
+  }catch(error){
+
+    console.error(
+      "Product loading error:",
+      error
+    );
+
+    productsContainer.innerHTML =
+      '<div class="empty">Unable to load products.</div>';
+
+  }
+
+}
+
+
+/* ==============================
+   START
+============================== */
+
+loadProducts();
+
+</script>
 
 </body>
 </html>
