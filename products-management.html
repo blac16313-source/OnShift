@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Product Manager — NOIR</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f6f5f1;
+  color:#111;
+}
+
+header{
+  height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 6%;
+  border-bottom:1px solid #ddd;
+}
+
+.logo{
+  font-size:24px;
+  font-weight:700;
+  letter-spacing:4px;
+}
+
+.back{
+  font-size:13px;
+  text-decoration:none;
+  color:#111;
+}
+
+.container{
+  max-width:850px;
+  margin:70px auto;
+  padding:0 25px;
+}
+
+.heading{
+  margin-bottom:40px;
+}
+
+.heading p{
+  font-size:12px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:#777;
+  margin-bottom:12px;
+}
+
+.heading h1{
+  font-size:48px;
+  letter-spacing:-3px;
+}
+
+.form{
+  background:#fff;
+  padding:35px;
+  border:1px solid #e2e2e2;
+}
+
+.field{
+  margin-bottom:25px;
+}
+
+label{
+  display:block;
+  font-size:12px;
+  margin-bottom:9px;
+  font-weight:600;
+}
+
+input,
+textarea,
+select{
+  width:100%;
+  border:1px solid #ccc;
+  background:#fff;
+  padding:14px;
+  font-family:inherit;
+  font-size:14px;
+  outline:none;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+  border-color:#111;
+}
+
+textarea{
+  min-height:130px;
+  resize:vertical;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+.image-box{
+  border:1px dashed #bbb;
+  padding:30px;
+  text-align:center;
+  cursor:pointer;
+  background:#fafafa;
+}
+
+.image-box:hover{
+  border-color:#111;
+}
+
+.image-box input{
+  display:none;
+}
+
+.image-text{
+  color:#777;
+  font-size:13px;
+}
+
+.preview{
+  display:none;
+  width:160px;
+  height:210px;
+  object-fit:cover;
+  margin:15px auto 0;
+}
+
+button{
+  width:100%;
+  padding:16px;
+  border:0;
+  background:#111;
+  color:#fff;
+  font-size:13px;
+  letter-spacing:1px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#333;
+}
+
+button:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+.message{
+  margin-top:20px;
+  padding:15px;
+  display:none;
+  font-size:13px;
+  background:#eee;
+}
+
+@media(max-width:650px){
+
+  .container{
+    margin:45px auto;
+  }
+
+  .heading h1{
+    font-size:40px;
+  }
+
+  .form{
+    padding:25px 20px;
+  }
+
+  .row{
+    grid-template-columns:1fr;
+    gap:0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="logo">NOIR</div>
+
+  <a href="index.html" class="back">
+    ← Back to Store
+  </a>
+
+</header>
+
+<div class="container">
+
+  <div class="heading">
+    <p>Store Management</p>
+    <h1>Add Product</h1>
+  </div>
+
+  <div class="form">
+
+    <div class="field">
+
+      <label>PRODUCT IMAGE</label>
+
+      <label class="image-box">
+
+        <div class="image-text">
+          Tap to upload product image
+        </div>
+
+        <input
+          type="file"
+          id="image"
+          accept="image/*"
+        >
+
+        <img
+          id="preview"
+          class="preview"
+          alt="Preview"
+        >
+
+      </label>
+
+    </div>
+
+    <div class="field">
+
+      <label for="name">
+        PRODUCT NAME
+      </label>
+
+      <input
+        id="name"
+        type="text"
+        placeholder="Example: Essential Overshirt"
+      >
+
+    </div>
+
+    <div class="row">
+
+      <div class="field">
+
+        <label for="price">
+          PRICE
+        </label>
+
+        <input
+          id="price"
+          type="number"
+          placeholder="1999"
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label for="category">
+          CATEGORY
+        </label>
+
+        <select id="category">
+
+          <option value="">
+            Select category
+          </option>
+
+          <option value="Shirts">
+            Shirts
+          </option>
+
+          <option value="T-Shirts">
+            T-Shirts
+          </option>
+
+          <option value="Trousers">
+            Trousers
+          </option>
+
+          <option value="Jackets">
+            Jackets
+          </option>
+
+          <option value="Accessories">
+            Accessories
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+    <div class="field">
+
+      <label for="description">
+        DESCRIPTION
+      </label>
+
+      <textarea
+        id="description"
+        placeholder="Describe the product..."
+      ></textarea>
+
+    </div>
+
+    <button id="save">
+      SAVE PRODUCT
+    </button>
+
+    <div id="message" class="message"></div>
+
+  </div>
+
+</div>
+
+<script>
+
+/* ==============================
+   SUPABASE
+============================== */
+
+const SUPABASE_URL =
+  "https://ktiovexnefqrgybkgpwi.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_2iKjHaxlnmTPKE1VrZCdQw_gjj6K5x3";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+/* ==============================
+   ELEMENTS
+============================== */
+
+const imageInput =
+  document.getElementById("image");
+
+const preview =
+  document.getElementById("preview");
+
+const saveButton =
+  document.getElementById("save");
+
+const message =
+  document.getElementById("message");
+
+
+/* ==============================
+   IMAGE PREVIEW
+============================== */
+
+imageInput.addEventListener(
+  "change",
+  function(){
+
+    const file = this.files[0];
+
+    if(!file) return;
+
+    preview.src =
+      URL.createObjectURL(file);
+
+    preview.style.display =
+      "block";
+
+  }
+);
+
+
+/* ==============================
+   MESSAGE
+============================== */
+
+function showMessage(text){
+
+  message.style.display =
+    "block";
+
+  message.textContent =
+    text;
+
+}
+
+
+/* ==============================
+   SAVE PRODUCT
+============================== */
+
+saveButton.addEventListener(
+  "click",
+  async function(){
+
+    const name =
+      document.getElementById("name")
+      .value.trim();
+
+    const price =
+      document.getElementById("price")
+      .value.trim();
+
+    const category =
+      document.getElementById("category")
+      .value;
+
+    const description =
+      document.getElementById("description")
+      .value.trim();
+
+    const image =
+      document.getElementById("image")
+      .files[0];
+
+
+    if(
+      !name ||
+      !price ||
+      !category ||
+      !description ||
+      !image
+    ){
+
+      showMessage(
+        "Please fill in all fields and upload an image."
+      );
+
+      return;
+    }
+
+
+    try{
+
+      saveButton.disabled = true;
+
+      saveButton.textContent =
+        "UPLOADING...";
+
+
+      /* IMAGE PATH */
+
+      const extension =
+        image.name
+        .split(".")
+        .pop()
+        .toLowerCase();
+
+      const fileName =
+        "noir/" +
+        crypto.randomUUID() +
+        "." +
+        extension;
+
+
+      /* UPLOAD IMAGE */
+
+      const upload =
+        await supabaseClient
+        .storage
+        .from("product-images")
+        .upload(
+          fileName,
+          image
+        );
+
+
+      if(upload.error){
+        throw upload.error;
+      }
+
+
+      /* GET PUBLIC IMAGE URL */
+
+      const publicUrl =
+        supabaseClient
+        .storage
+        .from("product-images")
+        .getPublicUrl(
+          fileName
+        );
+
+      const imageUrl =
+        publicUrl.data.publicUrl;
+
+
+      saveButton.textContent =
+        "SAVING...";
+
+
+      /* SAVE PRODUCT */
+
+      const result =
+        await supabaseClient
+        .from("OnShift.store")
+        .insert({
+
+          store_id: "noir",
+
+          name: name,
+
+          price: Number(price),
+
+          description: description,
+
+          category: category,
+
+          image_url: imageUrl
+
+        });
+
+
+      if(result.error){
+        throw result.error;
+      }
+
+
+      /* SUCCESS */
+
+      showMessage(
+        "Product saved successfully."
+      );
+
+
+      document.getElementById("name")
+        .value = "";
+
+      document.getElementById("price")
+        .value = "";
+
+      document.getElementById("category")
+        .value = "";
+
+      document.getElementById("description")
+        .value = "";
+
+      imageInput.value = "";
+
+      preview.src = "";
+
+      preview.style.display = "none";
+
+
+    }catch(error){
+
+      console.error(error);
+
+      showMessage(
+        "Error: " +
+        error.message
+      );
+
+    }
+
+
+    saveButton.disabled = false;
+
+    saveButton.textContent =
+      "SAVE PRODUCT";
+
+  }
+);
+
+</script>
+
+</body>
+</html>
