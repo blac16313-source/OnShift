@@ -6,8 +6,6 @@
 
 <title>Product Manager — NOIR</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
 *{
   box-sizing:border-box;
@@ -155,11 +153,6 @@ button:hover{
   background:#333;
 }
 
-button:disabled{
-  opacity:.6;
-  cursor:not-allowed;
-}
-
 .message{
   margin-top:20px;
   padding:15px;
@@ -230,7 +223,7 @@ button:disabled{
         <img
           id="preview"
           class="preview"
-          alt="Preview"
+          alt="Product Preview"
         >
 
       </label>
@@ -330,27 +323,6 @@ button:disabled{
 
 <script>
 
-/* ==============================
-   SUPABASE
-============================== */
-
-const SUPABASE_URL =
-  "https://ktiovexnefqrgybkgpwi.supabase.co";
-
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_2iKjHaxlnmTPKE1VrZCdQw_gjj6K5x3";
-
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-  );
-
-
-/* ==============================
-   ELEMENTS
-============================== */
-
 const imageInput =
   document.getElementById("image");
 
@@ -364,17 +336,15 @@ const message =
   document.getElementById("message");
 
 
-/* ==============================
-   IMAGE PREVIEW
-============================== */
-
 imageInput.addEventListener(
   "change",
   function(){
 
     const file = this.files[0];
 
-    if(!file) return;
+    if(!file){
+      return;
+    }
 
     preview.src =
       URL.createObjectURL(file);
@@ -386,193 +356,15 @@ imageInput.addEventListener(
 );
 
 
-/* ==============================
-   MESSAGE
-============================== */
-
-function showMessage(text){
-
-  message.style.display =
-    "block";
-
-  message.textContent =
-    text;
-
-}
-
-
-/* ==============================
-   SAVE PRODUCT
-============================== */
-
 saveButton.addEventListener(
   "click",
-  async function(){
+  function(){
 
-    const name =
-      document.getElementById("name")
-      .value.trim();
+    message.style.display =
+      "block";
 
-    const price =
-      document.getElementById("price")
-      .value.trim();
-
-    const category =
-      document.getElementById("category")
-      .value;
-
-    const description =
-      document.getElementById("description")
-      .value.trim();
-
-    const image =
-      document.getElementById("image")
-      .files[0];
-
-
-    if(
-      !name ||
-      !price ||
-      !category ||
-      !description ||
-      !image
-    ){
-
-      showMessage(
-        "Please fill in all fields and upload an image."
-      );
-
-      return;
-    }
-
-
-    try{
-
-      saveButton.disabled = true;
-
-      saveButton.textContent =
-        "UPLOADING...";
-
-
-      /* IMAGE PATH */
-
-      const extension =
-        image.name
-        .split(".")
-        .pop()
-        .toLowerCase();
-
-      const fileName =
-        "noir/" +
-        crypto.randomUUID() +
-        "." +
-        extension;
-
-
-      /* UPLOAD IMAGE */
-
-      const upload =
-        await supabaseClient
-        .storage
-        .from("product-images")
-        .upload(
-          fileName,
-          image
-        );
-
-
-      if(upload.error){
-        throw upload.error;
-      }
-
-
-      /* GET PUBLIC IMAGE URL */
-
-      const publicUrl =
-        supabaseClient
-        .storage
-        .from("product-images")
-        .getPublicUrl(
-          fileName
-        );
-
-      const imageUrl =
-        publicUrl.data.publicUrl;
-
-
-      saveButton.textContent =
-        "SAVING...";
-
-
-      /* SAVE PRODUCT */
-
-      const result =
-        await supabaseClient
-        .from("OnShift.store")
-        .insert({
-
-          store_id: "noir",
-
-          name: name,
-
-          price: Number(price),
-
-          description: description,
-
-          category: category,
-
-          image_url: imageUrl
-
-        });
-
-
-      if(result.error){
-        throw result.error;
-      }
-
-
-      /* SUCCESS */
-
-      showMessage(
-        "Product saved successfully."
-      );
-
-
-      document.getElementById("name")
-        .value = "";
-
-      document.getElementById("price")
-        .value = "";
-
-      document.getElementById("category")
-        .value = "";
-
-      document.getElementById("description")
-        .value = "";
-
-      imageInput.value = "";
-
-      preview.src = "";
-
-      preview.style.display = "none";
-
-
-    }catch(error){
-
-      console.error(error);
-
-      showMessage(
-        "Error: " +
-        error.message
-      );
-
-    }
-
-
-    saveButton.disabled = false;
-
-    saveButton.textContent =
-      "SAVE PRODUCT";
+    message.textContent =
+      "Product Manager is working. Supabase saving will be connected next.";
 
   }
 );
