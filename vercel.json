@@ -1,0 +1,20 @@
+{
+  "rewrites": [
+    {
+      "source": "/products-managment.html",
+      "destination": "/products-managment.html"
+    },
+    {
+      "source": "/product.html",
+      "destination": "/product.html"
+    },
+    {
+      "source": "/products.html",
+      "destination": "/products.html"
+    },
+    {
+      "source": "/shop.html",
+      "destination": "/shop.html"
+    }
+  ]
+}
