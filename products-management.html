@@ -331,7 +331,7 @@ button:disabled{
 <script>
 
 /* ==============================
-   SUPABASE CONNECTION
+   SUPABASE
 ============================== */
 
 const SUPABASE_URL =
@@ -432,7 +432,7 @@ saveButton.addEventListener(
 
 
     /* ==========================
-       VALIDATE
+       VALIDATION
     ========================== */
 
     if(
@@ -460,7 +460,7 @@ saveButton.addEventListener(
 
 
       /* ==========================
-         CREATE UNIQUE FILE NAME
+         UNIQUE IMAGE NAME
       ========================== */
 
       const extension =
@@ -477,7 +477,7 @@ saveButton.addEventListener(
 
 
       /* ==========================
-         UPLOAD IMAGE TO STORAGE
+         UPLOAD IMAGE
       ========================== */
 
       const upload =
@@ -501,7 +501,7 @@ saveButton.addEventListener(
 
 
       /* ==========================
-         GET PUBLIC IMAGE URL
+         IMAGE URL
       ========================== */
 
       const publicUrl =
@@ -517,10 +517,7 @@ saveButton.addEventListener(
 
 
       /* ==========================
-         SAVE PRODUCT TO DATABASE
-         
-         Schema: public
-         Table: "OnShift.store"
+         DATABASE
       ========================== */
 
       saveButton.textContent =
@@ -529,7 +526,7 @@ saveButton.addEventListener(
 
       const result =
         await supabaseClient
-        .from("OnShift.store")
+        .from("store")
         .insert({
 
           store_id: "noir",
