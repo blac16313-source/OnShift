@@ -202,17 +202,12 @@ button:disabled{
 
 </header>
 
-
 <div class="container">
 
   <div class="heading">
-
     <p>Store Management</p>
-
     <h1>Add Product</h1>
-
   </div>
-
 
   <div class="form">
 
@@ -242,7 +237,6 @@ button:disabled{
 
     </div>
 
-
     <div class="field">
 
       <label for="name">
@@ -256,7 +250,6 @@ button:disabled{
       >
 
     </div>
-
 
     <div class="row">
 
@@ -273,7 +266,6 @@ button:disabled{
         >
 
       </div>
-
 
       <div class="field">
 
@@ -313,7 +305,6 @@ button:disabled{
 
     </div>
 
-
     <div class="field">
 
       <label for="description">
@@ -327,11 +318,9 @@ button:disabled{
 
     </div>
 
-
     <button id="save">
       SAVE PRODUCT
     </button>
-
 
     <div id="message" class="message"></div>
 
@@ -339,18 +328,17 @@ button:disabled{
 
 </div>
 
-
 <script>
 
 /* ==============================
-   SUPABASE CONNECTION
+   SUPABASE
 ============================== */
 
 const SUPABASE_URL =
   "https://ktiovexnefqrgybkgpwi.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
-  "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
+  "sb_publishable_2iKjHaxlnmTPKE1VrZCdQw_gjj6K5x3";
 
 const supabaseClient =
   window.supabase.createClient(
@@ -442,8 +430,6 @@ saveButton.addEventListener(
       .files[0];
 
 
-    /* CHECK FIELDS */
-
     if(
       !name ||
       !price ||
@@ -468,19 +454,22 @@ saveButton.addEventListener(
         "UPLOADING...";
 
 
-      /* ==============================
-         UPLOAD IMAGE
-      ============================== */
+      /* IMAGE PATH */
 
-      const fileExtension =
-        image.name.split(".").pop();
+      const extension =
+        image.name
+        .split(".")
+        .pop()
+        .toLowerCase();
 
       const fileName =
         "noir/" +
         crypto.randomUUID() +
         "." +
-        fileExtension;
+        extension;
 
+
+      /* UPLOAD IMAGE */
 
       const upload =
         await supabaseClient
@@ -493,87 +482,79 @@ saveButton.addEventListener(
 
 
       if(upload.error){
-
         throw upload.error;
-
       }
 
 
-      /* ==============================
-         GET IMAGE URL
-      ============================== */
+      /* GET PUBLIC IMAGE URL */
 
       const publicUrl =
         supabaseClient
         .storage
         .from("product-images")
-        .getPublicUrl(fileName);
-
+        .getPublicUrl(
+          fileName
+        );
 
       const imageUrl =
         publicUrl.data.publicUrl;
 
 
-      /* ==============================
-         SAVE PRODUCT
-      ============================== */
+      saveButton.textContent =
+        "SAVING...";
+
+
+      /* SAVE PRODUCT */
 
       const result =
         await supabaseClient
         .from("OnShift.store")
         .insert({
 
-          store_id:"noir",
+          store_id: "noir",
 
-          name:name,
+          name: name,
 
-          price:Number(price),
+          price: Number(price),
 
-          description:description,
+          description: description,
 
-          category:category,
+          category: category,
 
-          image_url:imageUrl
+          image_url: imageUrl
 
         });
 
 
       if(result.error){
-
         throw result.error;
-
       }
 
 
-      /* ==============================
-         SUCCESS
-      ============================== */
+      /* SUCCESS */
 
       showMessage(
         "Product saved successfully."
       );
 
 
-      document
-      .getElementById("name")
-      .value = "";
+      document.getElementById("name")
+        .value = "";
 
-      document
-      .getElementById("price")
-      .value = "";
+      document.getElementById("price")
+        .value = "";
 
-      document
-      .getElementById("category")
-      .value = "";
+      document.getElementById("category")
+        .value = "";
 
-      document
-      .getElementById("description")
-      .value = "";
+      document.getElementById("description")
+        .value = "";
 
       imageInput.value = "";
 
-      preview.style.display =
-        "none";
+      preview.src = "";
+
+      preview.style.display = "none";
 
 
     }catch(error){
