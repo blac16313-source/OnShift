@@ -6,6 +6,8 @@
 
 <title>Product Manager — NOIR</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 *{
   box-sizing:border-box;
@@ -151,6 +153,11 @@ button{
 
 button:hover{
   background:#333;
+}
+
+button:disabled{
+  opacity:.6;
+  cursor:not-allowed;
 }
 
 .message{
@@ -323,6 +330,27 @@ button:hover{
 
 <script>
 
+/* ==============================
+   SUPABASE
+============================== */
+
+const SUPABASE_URL =
+  "https://ktiovexnefqrgybkgpwi.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_2iKjHaxlnmTPKE1VrZCdQw_gjj6K5x3";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+/* ==============================
+   ELEMENTS
+============================== */
+
 const imageInput =
   document.getElementById("image");
 
@@ -335,6 +363,10 @@ const saveButton =
 const message =
   document.getElementById("message");
 
+
+/* ==============================
+   IMAGE PREVIEW
+============================== */
 
 imageInput.addEventListener(
   "change",
@@ -356,15 +388,216 @@ imageInput.addEventListener(
 );
 
 
+/* ==============================
+   MESSAGE
+============================== */
+
+function showMessage(text){
+
+  message.style.display =
+    "block";
+
+  message.textContent =
+    text;
+
+}
+
+
+/* ==============================
+   SAVE PRODUCT
+============================== */
+
 saveButton.addEventListener(
   "click",
-  function(){
+  async function(){
 
-    message.style.display =
-      "block";
+    const name =
+      document.getElementById("name")
+      .value.trim();
 
-    message.textContent =
-      "Product Manager is working. Supabase saving will be connected next.";
+    const price =
+      document.getElementById("price")
+      .value.trim();
+
+    const category =
+      document.getElementById("category")
+      .value;
+
+    const description =
+      document.getElementById("description")
+      .value.trim();
+
+    const image =
+      imageInput.files[0];
+
+
+    /* CHECK FIELDS */
+
+    if(
+      !name ||
+      !price ||
+      !category ||
+      !description ||
+      !image
+    ){
+
+      showMessage(
+        "Please fill in all fields and upload an image."
+      );
+
+      return;
+    }
+
+
+    try{
+
+      saveButton.disabled = true;
+
+      saveButton.textContent =
+        "UPLOADING...";
+
+
+      /* ==========================
+         CREATE IMAGE FILE NAME
+      ========================== */
+
+      const extension =
+        image.name
+        .split(".")
+        .pop()
+        .toLowerCase();
+
+      const fileName =
+        "noir/" +
+        crypto.randomUUID() +
+        "." +
+        extension;
+
+
+      /* ==========================
+         UPLOAD IMAGE
+      ========================== */
+
+      const upload =
+        await supabaseClient
+        .storage
+        .from("product-images")
+        .upload(
+          fileName,
+          image
+        );
+
+
+      if(upload.error){
+
+        throw new Error(
+          "Image upload failed: " +
+          upload.error.message
+        );
+
+      }
+
+
+      /* ==========================
+         GET IMAGE URL
+      ========================== */
+
+      const publicUrl =
+        supabaseClient
+        .storage
+        .from("product-images")
+        .getPublicUrl(
+          fileName
+        );
+
+      const imageUrl =
+        publicUrl.data.publicUrl;
+
+
+      /* ==========================
+         SAVE TO DATABASE
+      ========================== */
+
+      saveButton.textContent =
+        "SAVING...";
+
+
+      const result =
+        await supabaseClient
+        .schema("OnShift")
+        .from("store")
+        .insert({
+
+          store_id: "noir",
+
+          name: name,
+
+          price: Number(price),
+
+          description: description,
+
+          category: category,
+
+          image_url: imageUrl
+
+        });
+
+
+      if(result.error){
+
+        throw new Error(
+          "Database save failed: " +
+          result.error.message
+        );
+
+      }
+
+
+      /* ==========================
+         SUCCESS
+      ========================== */
+
+      showMessage(
+        "Product saved successfully."
+      );
+
+
+      document.getElementById("name")
+        .value = "";
+
+      document.getElementById("price")
+        .value = "";
+
+      document.getElementById("category")
+        .value = "";
+
+      document.getElementById("description")
+        .value = "";
+
+      imageInput.value = "";
+
+      preview.src = "";
+
+      preview.style.display =
+        "none";
+
+
+    }catch(error){
+
+      console.error(error);
+
+      showMessage(
+        "Error: " +
+        error.message
+      );
+
+    }
+
+
+    saveButton.disabled = false;
+
+    saveButton.textContent =
+      "SAVE PRODUCT";
 
   }
 );
